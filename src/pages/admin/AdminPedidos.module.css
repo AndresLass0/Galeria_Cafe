@@ -1,0 +1,366 @@
+.container {
+  padding: 30px;
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+
+.header {
+  margin-bottom: 8px;
+}
+
+.header h2 {
+  font-size: 2.2rem;
+  margin-bottom: 4px;
+}
+
+.header p {
+  font-size: 1rem;
+  color: var(--text-secondary);
+}
+
+.emptyState {
+  text-align: center;
+  padding: 60px 20px;
+  color: var(--text-muted);
+}
+
+.emptyIcon {
+  opacity: 0.5;
+  margin-bottom: 16px;
+}
+
+/* List of Orders */
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.orderCard {
+  background: rgba(0,0,0,0.15);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  transition: all var(--transition-fast);
+}
+
+.orderCardExpanded {
+  border-color: rgba(204, 164, 99, 0.3);
+  box-shadow: 0 4px 15px rgba(0,0,0,0.4);
+}
+
+.orderSummary {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 24px;
+  cursor: pointer;
+  user-select: none;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.orderSummary:hover {
+  background: rgba(255,255,255,0.01);
+}
+
+.orderMeta {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.orderId {
+  font-size: 1.05rem;
+  color: var(--text-primary);
+}
+
+.orderId strong {
+  color: var(--accent-gold);
+}
+
+.metaRow {
+  display: flex;
+  gap: 18px;
+  flex-wrap: wrap;
+}
+
+.metaItem {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.82rem;
+  color: var(--text-muted);
+}
+
+.orderSummaryRight {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.total {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--accent-gold);
+}
+
+/* Select box styles matching states */
+.statusSelect {
+  font-family: inherit;
+  font-size: 0.85rem;
+  font-weight: 600;
+  padding: 6px 12px;
+  border-radius: var(--radius-sm);
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.statusSelect:focus {
+  outline: none;
+}
+
+.select_pendiente {
+  background-color: rgba(223, 160, 55, 0.15);
+  color: var(--status-pending);
+  border-color: rgba(223, 160, 55, 0.3);
+}
+
+.select_en_preparacion {
+  background-color: rgba(55, 142, 223, 0.15);
+  color: var(--status-completed);
+  border-color: rgba(55, 142, 223, 0.3);
+}
+
+.select_completado {
+  background-color: rgba(76, 166, 76, 0.15);
+  color: var(--status-approved);
+  border-color: rgba(76, 166, 76, 0.3);
+}
+
+@media (max-width: 768px) {
+  .orderSummary {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .orderSummaryRight {
+    justify-content: space-between;
+    border-top: 1px solid var(--border-color);
+    padding-top: 12px;
+    margin-top: 8px;
+  }
+}
+
+/* Detailed card section */
+.orderDetail {
+  background: rgba(0, 0, 0, 0.15);
+  border-top: 1px solid var(--border-color);
+  padding: 24px;
+}
+
+.observations {
+  display: flex;
+  gap: 10px;
+  background: rgba(204, 164, 99, 0.04);
+  border: 1px solid rgba(204, 164, 99, 0.15);
+  padding: 12px 18px;
+  border-radius: var(--radius-md);
+  margin-bottom: 20px;
+  font-size: 0.88rem;
+  align-items: center;
+  color: var(--text-secondary);
+}
+
+.observations strong {
+  color: var(--accent-gold);
+}
+
+.itemsTitle {
+  font-family: var(--font-sans);
+  font-size: 1rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  letter-spacing: 0.05em;
+  margin-bottom: 12px;
+}
+
+/* Custom internal table */
+.itemsTable {
+  display: flex;
+  flex-direction: column;
+}
+
+.tableHeader {
+  display: flex;
+  border-bottom: 1px solid var(--border-color);
+  padding: 8px 12px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.itemRow {
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid rgba(255,255,255,0.02);
+  padding: 12px;
+}
+
+.itemRow:last-child {
+  border-bottom: none;
+}
+
+.thCol, .tdCol {
+  flex: 1;
+}
+
+.thCol:first-child, .tdCol:first-child {
+  flex: 1.5;
+}
+
+.prodName {
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.subName {
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+}
+
+/* Action button items */
+.actionButtons {
+  display: flex;
+  gap: 8px;
+  justify-content: flex-end;
+}
+
+.stateBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: inherit;
+  font-weight: 600;
+  font-size: 0.75rem;
+  padding: 6px 12px;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  background: transparent;
+  color: var(--text-secondary);
+  transition: all var(--transition-fast);
+}
+
+.btnApprove {
+  color: var(--status-approved);
+  border-color: rgba(76, 166, 76, 0.3);
+}
+
+.btnApprove:hover {
+  background: var(--status-approved);
+  color: white;
+  border-color: var(--status-approved);
+}
+
+.btnReject {
+  color: var(--status-rejected);
+  border-color: rgba(217, 69, 69, 0.3);
+}
+
+.btnReject:hover {
+  background: var(--status-rejected);
+  color: white;
+  border-color: var(--status-rejected);
+}
+
+/* Resolved states */
+.resolvedState {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 2px;
+}
+
+.itemBadge {
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  padding: 2px 8px;
+  border-radius: var(--radius-sm);
+}
+
+.badgeApprove {
+  background: rgba(76, 166, 76, 0.15);
+  color: var(--status-approved);
+}
+
+.badgeReject {
+  background: rgba(217, 69, 69, 0.15);
+  color: var(--status-rejected);
+}
+
+.rejectText {
+  font-size: 0.75rem;
+  color: var(--status-rejected);
+}
+
+/* Reject dialog inline form */
+.rejectForm {
+  display: flex;
+  gap: 6px;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.actionBtn {
+  background: transparent;
+  border: 1px solid var(--border-color);
+  width: 28px;
+  height: 28px;
+  border-radius: var(--radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.confirmBtn {
+  color: var(--status-approved);
+  border-color: var(--status-approved);
+}
+
+.confirmBtn:hover {
+  background-color: var(--status-approved);
+  color: white;
+}
+
+.cancelBtn {
+  color: var(--text-muted);
+}
+
+.cancelBtn:hover {
+  color: var(--text-primary);
+}
+
+@media (max-width: 600px) {
+  .tableHeader {
+    display: none;
+  }
+  .itemRow {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 8px;
+  }
+  .tdCol {
+    text-align: left !important;
+  }
+  .actionButtons, .resolvedState, .rejectForm {
+    justify-content: flex-start;
+    align-items: flex-start;
+  }
+}

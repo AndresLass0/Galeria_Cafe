@@ -1,0 +1,172 @@
+.container {
+  padding: 30px;
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+
+.header {
+  margin-bottom: 8px;
+}
+
+.header h2 {
+  font-size: 2.2rem;
+  margin-bottom: 4px;
+}
+
+.header p {
+  font-size: 1rem;
+  color: var(--text-secondary);
+}
+
+.layout {
+  display: grid;
+  grid-template-columns: 1fr 1.2fr;
+  gap: 32px;
+}
+
+@media (max-width: 768px) {
+  .layout {
+    grid-template-columns: 1fr;
+  }
+}
+
+.formTitle {
+  font-family: var(--font-sans);
+  font-size: 1.2rem;
+  margin-bottom: 16px;
+}
+
+.form {
+  margin-top: 10px;
+}
+
+.inputWrapper {
+  display: flex;
+  gap: 10px;
+}
+
+/* List Column styling */
+.listTitle {
+  font-family: var(--font-sans);
+  font-size: 1.25rem;
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  border-bottom: 1px solid var(--border-color);
+  padding-bottom: 10px;
+}
+
+.emptyState {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 48px 24px;
+  color: var(--text-muted);
+}
+
+.emptyIcon {
+  margin-bottom: 16px;
+  opacity: 0.5;
+}
+
+.emptyState p {
+  color: var(--text-secondary);
+  font-weight: 500;
+  margin-bottom: 4px;
+}
+
+.emptyState span {
+  font-size: 0.85rem;
+}
+
+/* List items */
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 20px;
+  background: rgba(0,0,0,0.15);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  transition: all var(--transition-fast);
+}
+
+.item:hover {
+  border-color: var(--text-muted);
+  background: rgba(255,255,255,0.01);
+}
+
+.name {
+  font-size: 1.05rem;
+  font-weight: 500;
+}
+
+.itemActions {
+  display: flex;
+  gap: 8px;
+}
+
+.actionBtn {
+  background: transparent;
+  border: 1px solid var(--border-color);
+  color: var(--text-secondary);
+  width: 34px;
+  height: 34px;
+  border-radius: var(--radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.actionBtn:hover {
+  color: var(--accent-gold);
+  border-color: var(--accent-gold);
+  background: rgba(204, 164, 99, 0.05);
+}
+
+.deleteBtn:hover {
+  color: var(--status-rejected);
+  border-color: var(--status-rejected);
+  background: rgba(217, 69, 69, 0.05);
+}
+
+/* Inline Edit */
+.editWrapper {
+  display: flex;
+  gap: 8px;
+  width: 100%;
+}
+
+.editWrapper input {
+  flex: 1;
+}
+
+.saveBtn {
+  color: var(--status-approved);
+  border-color: var(--status-approved);
+}
+
+.saveBtn:hover {
+  color: white;
+  background-color: var(--status-approved);
+}
+
+.cancelBtn {
+  color: var(--text-muted);
+}
+
+.cancelBtn:hover {
+  color: var(--text-primary);
+}

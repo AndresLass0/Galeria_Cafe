@@ -1,0 +1,89 @@
+.pageWrapper {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  background: radial-gradient(circle at 10% 20%, rgba(26, 22, 19, 0.4) 0%, rgba(18, 16, 14, 1) 90%);
+}
+
+.card {
+  width: 100%;
+  max-width: 500px;
+  padding: 48px 40px;
+  text-align: center;
+}
+
+.iconWrapper {
+  width: 90px;
+  height: 90px;
+  background: rgba(223, 160, 55, 0.1);
+  color: var(--status-pending);
+  border-radius: var(--radius-full);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 24px auto;
+  border: 1px solid rgba(223, 160, 55, 0.2);
+}
+
+@keyframes pulseRotate {
+  0% { transform: scale(1) rotate(0deg); }
+  50% { transform: scale(1.1) rotate(180deg); }
+  100% { transform: scale(1) rotate(360deg); }
+}
+
+.animatedHourglass {
+  animation: pulseRotate 4s cubic-bezier(0.68, -0.6, 0.32, 1.6) infinite;
+}
+
+.card h2 {
+  font-size: 2.2rem;
+  margin-bottom: 16px;
+}
+
+.intro {
+  font-size: 1.1rem;
+  color: var(--text-primary);
+  margin-bottom: 12px;
+}
+
+.detail {
+  font-size: 0.95rem;
+  color: var(--text-secondary);
+  margin-bottom: 24px;
+  line-height: 1.6;
+}
+
+.statusBox {
+  background: rgba(0, 0, 0, 0.15);
+  border: 1px solid var(--border-color);
+  padding: 12px 20px;
+  border-radius: var(--radius-md);
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 32px;
+}
+
+.statusLabel {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  text-transform: uppercase;
+}
+
+.actions {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.spinner {
+  animation: spin 1s linear infinite;
+}

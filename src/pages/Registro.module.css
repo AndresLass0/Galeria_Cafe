@@ -1,0 +1,99 @@
+.pageWrapper {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px;
+  background: radial-gradient(circle at 10% 20%, rgba(26, 22, 19, 0.4) 0%, rgba(18, 16, 14, 1) 90%);
+}
+
+.registerCard {
+  width: 100%;
+  max-width: 580px;
+  padding: 40px;
+}
+
+.header {
+  margin-bottom: 24px;
+  position: relative;
+  text-align: center;
+}
+
+.backBtn {
+  position: absolute;
+  left: 0;
+  top: 4px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--text-muted);
+  font-size: 0.9rem;
+  font-weight: 500;
+  transition: color var(--transition-fast);
+}
+
+.backBtn:hover {
+  color: var(--accent-gold);
+}
+
+@media (max-width: 576px) {
+  .backBtn {
+    position: static;
+    margin-bottom: 12px;
+    justify-content: center;
+  }
+}
+
+.header h2 {
+  font-size: 2rem;
+  margin-bottom: 4px;
+}
+
+.header p {
+  font-size: 0.9rem;
+  color: var(--text-muted);
+}
+
+.form {
+  text-align: left;
+}
+
+.row {
+  display: flex;
+  gap: 16px;
+}
+
+@media (max-width: 576px) {
+  .row {
+    flex-direction: column;
+    gap: 0;
+  }
+}
+
+.inputWrapper {
+  position: relative;
+}
+
+.inputIcon {
+  position: absolute;
+  left: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--text-muted);
+  pointer-events: none;
+}
+
+.inputWrapper input {
+  padding-left: 44px;
+}
+
+.loginLink {
+  margin-top: 24px;
+  text-align: center;
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+}
+
+.loginLink a {
+  font-weight: 600;
+}

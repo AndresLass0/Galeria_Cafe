@@ -1,0 +1,227 @@
+.container {
+  padding: 30px;
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+
+.header {
+  margin-bottom: 8px;
+}
+
+.header h2 {
+  font-size: 2.2rem;
+  margin-bottom: 4px;
+}
+
+.header p {
+  font-size: 1rem;
+  color: var(--text-secondary);
+}
+
+.topActions {
+  display: flex;
+  justify-content: flex-end;
+}
+
+/* Expandable Form Card */
+.formCard {
+  padding: 28px;
+  border-color: rgba(204, 164, 99, 0.2);
+}
+
+.formCard h3 {
+  font-family: var(--font-sans);
+  font-size: 1.25rem;
+  margin-bottom: 20px;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.formRow {
+  display: flex;
+  gap: 20px;
+}
+
+@media (max-width: 768px) {
+  .formRow {
+    flex-direction: column;
+    gap: 0;
+  }
+}
+
+.checkboxLabel {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  font-size: 0.95rem;
+  color: var(--text-primary);
+  user-select: none;
+}
+
+.checkboxLabel input {
+  width: 18px;
+  height: 18px;
+  accent-color: var(--accent-gold);
+}
+
+.formActions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  border-top: 1px solid var(--border-color);
+  padding-top: 20px;
+}
+
+/* Grid Layout */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 24px;
+}
+
+/* Card layout */
+.card {
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.imageWrapper {
+  height: 180px;
+  position: relative;
+  overflow: hidden;
+  background-color: rgba(0,0,0,0.2);
+}
+
+.productImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.categoryBadge {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  padding: 4px 10px;
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  border-radius: var(--radius-sm);
+  letter-spacing: 0.05em;
+}
+
+.cat_comidas {
+  background-color: #c2593f;
+  color: white;
+}
+
+.cat_bebidas {
+  background-color: #cca463;
+  color: var(--bg-primary);
+}
+
+.cat_eventos {
+  background-color: #378edf;
+  color: white;
+}
+
+.details {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.titlePrice {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.titlePrice h3 {
+  font-family: var(--font-sans);
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.price {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--accent-gold);
+}
+
+.description {
+  font-size: 0.8rem;
+  line-height: 1.5;
+  color: var(--text-secondary);
+  margin-bottom: 14px;
+  flex: 1;
+}
+
+.availability {
+  margin-bottom: 16px;
+}
+
+.availabilityBadge {
+  display: inline-block;
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  padding: 2px 8px;
+  border-radius: var(--radius-sm);
+}
+
+.avail {
+  background-color: rgba(76, 166, 76, 0.15);
+  color: var(--status-approved);
+  border: 1px solid rgba(76, 166, 76, 0.3);
+}
+
+.notAvail {
+  background-color: rgba(217, 69, 69, 0.15);
+  color: var(--status-rejected);
+  border: 1px solid rgba(217, 69, 69, 0.3);
+}
+
+.actions {
+  display: flex;
+  gap: 10px;
+  border-top: 1px solid var(--border-color);
+  padding-top: 14px;
+}
+
+.actionBtn {
+  background: transparent;
+  border: 1px solid var(--border-color);
+  color: var(--text-secondary);
+  width: 38px;
+  height: 38px;
+  border-radius: var(--radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.actionBtn:hover {
+  color: var(--accent-gold);
+  border-color: var(--accent-gold);
+  background: rgba(204, 164, 99, 0.05);
+}
+
+.deleteBtn:hover {
+  color: var(--status-rejected);
+  border-color: var(--status-rejected);
+  background: rgba(217, 69, 69, 0.05);
+}

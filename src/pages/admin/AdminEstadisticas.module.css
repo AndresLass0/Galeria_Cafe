@@ -1,0 +1,215 @@
+.container {
+  padding: 30px;
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+
+.header {
+  margin-bottom: 8px;
+}
+
+.header h2 {
+  font-size: 2.2rem;
+  margin-bottom: 4px;
+}
+
+.header p {
+  font-size: 1rem;
+  color: var(--text-secondary);
+}
+
+/* KPI Overviews */
+.kpiGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 24px;
+}
+
+.kpiCard {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+  padding: 24px;
+}
+
+.kpiIcon {
+  width: 48px;
+  height: 48px;
+  border-radius: var(--radius-md);
+  background: rgba(204, 164, 99, 0.1);
+  color: var(--accent-gold);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  border: 1px solid rgba(204, 164, 99, 0.2);
+}
+
+.kpiTexts {
+  display: flex;
+  flex-direction: column;
+}
+
+.kpiLabel {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.kpiTexts h3 {
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  line-height: 1.25;
+  margin: 2px 0;
+}
+
+.kpiTexts p {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+
+/* Charts Grid */
+.chartsGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+}
+
+@media (max-width: 992px) {
+  .chartsGrid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.chartCol {
+  padding: 28px;
+  display: flex;
+  flex-direction: column;
+}
+
+.chartHeader {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 24px;
+  border-bottom: 1px solid var(--border-color);
+  padding-bottom: 12px;
+}
+
+.chartIcon {
+  color: var(--accent-gold);
+}
+
+.chartHeader h3 {
+  font-family: var(--font-sans);
+  font-size: 1.15rem;
+}
+
+.empty {
+  color: var(--text-muted);
+  font-style: italic;
+  font-size: 0.88rem;
+  text-align: center;
+  padding: 40px 0;
+}
+
+/* Horizontal Bar chart rows */
+.municipioChartList, .productSalesList {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.barRow {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.barLabel {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.85rem;
+}
+
+.barLabel strong {
+  color: var(--text-primary);
+}
+
+.barLabel span {
+  color: var(--text-muted);
+}
+
+.barTrack {
+  width: 100%;
+  height: 8px;
+  background: var(--bg-tertiary);
+  border-radius: var(--radius-full);
+  overflow: hidden;
+}
+
+.barFillGold {
+  height: 100%;
+  background: linear-gradient(90deg, var(--accent-gold) 0%, #ecd3a5 100%);
+  border-radius: var(--radius-full);
+  transition: width 0.5s ease-out;
+}
+
+.barFillTerracota {
+  height: 100%;
+  background: linear-gradient(90deg, var(--accent-terracota) 0%, #e29482 100%);
+  border-radius: var(--radius-full);
+  transition: width 0.5s ease-out;
+}
+
+/* Vertical Bar chart last 5 days */
+.daysChartList {
+  display: flex;
+  justify-content: space-around;
+  align-items: flex-end;
+  height: 250px;
+  padding: 20px 0;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.dayCol {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 70px;
+  gap: 8px;
+}
+
+.dayAmount {
+  font-size: 0.75rem;
+  color: var(--accent-gold);
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+
+.verticalBarTrack {
+  width: 32px;
+  height: 140px;
+  background: var(--bg-tertiary);
+  border-radius: var(--radius-sm);
+  display: flex;
+  align-items: flex-end;
+  overflow: hidden;
+}
+
+.verticalBarFill {
+  width: 100%;
+  background: linear-gradient(180deg, #edd6b1 0%, var(--accent-gold) 100%);
+  border-radius: var(--radius-sm);
+  transition: height 0.5s ease-out;
+}
+
+.dayLabel {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  font-weight: 500;
+}

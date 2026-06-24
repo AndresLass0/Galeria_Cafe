@@ -1,0 +1,247 @@
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 40px 20px;
+}
+
+.header {
+  margin-bottom: 32px;
+}
+
+.header h2 {
+  font-size: 2.2rem;
+  margin-bottom: 8px;
+}
+
+.header p {
+  font-size: 1.05rem;
+  color: var(--text-secondary);
+}
+
+.filterBar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+  border-bottom: 1px solid var(--border-color);
+  padding-bottom: 16px;
+}
+
+.categories {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.filterBtn {
+  background: transparent;
+  border: 1px solid var(--border-color);
+  color: var(--text-secondary);
+  padding: 8px 20px;
+  border-radius: var(--radius-full);
+  cursor: pointer;
+  font-weight: 500;
+  transition: all var(--transition-fast);
+}
+
+.filterBtn:hover {
+  color: var(--accent-gold);
+  border-color: var(--accent-gold);
+  background: rgba(204, 164, 99, 0.04);
+}
+
+.activeFilter {
+  background-color: var(--accent-gold);
+  color: var(--bg-primary);
+  border-color: var(--accent-gold);
+  box-shadow: var(--shadow-gold);
+}
+
+.infoBanner {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: rgba(204, 164, 99, 0.05);
+  border: 1px solid rgba(204, 164, 99, 0.15);
+  padding: 14px 20px;
+  border-radius: var(--radius-md);
+  margin-bottom: 32px;
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+}
+
+.infoBanner a {
+  font-weight: 600;
+  text-decoration: underline;
+}
+
+/* Grid Layout */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 30px;
+}
+
+.emptyState {
+  text-align: center;
+  padding: 48px;
+  color: var(--text-muted);
+}
+
+/* Card Styling */
+.card {
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.card:hover .productImage {
+  transform: scale(1.05);
+}
+
+.imageWrapper {
+  height: 200px;
+  position: relative;
+  overflow: hidden;
+  background-color: rgba(0,0,0,0.2);
+}
+
+.productImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform var(--transition-slow);
+}
+
+.categoryBadge {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  padding: 4px 10px;
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  border-radius: var(--radius-sm);
+  letter-spacing: 0.05em;
+}
+
+.cat_comidas {
+  background-color: #c2593f;
+  color: white;
+}
+
+.cat_bebidas {
+  background-color: #cca463;
+  color: var(--bg-primary);
+}
+
+.cat_eventos {
+  background-color: #378edf;
+  color: white;
+}
+
+.details {
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.namePrice {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+  margin-bottom: 10px;
+}
+
+.namePrice h3 {
+  font-family: var(--font-sans);
+  font-size: 1.15rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.price {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--accent-gold);
+}
+
+.description {
+  font-size: 0.85rem;
+  line-height: 1.5;
+  color: var(--text-secondary);
+  margin-bottom: 16px;
+  flex: 1;
+}
+
+.availability {
+  margin-bottom: 16px;
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.badgeAvailable {
+  color: var(--status-approved);
+}
+
+.badgeUnavailable {
+  background-color: rgba(217, 69, 69, 0.15);
+  color: var(--status-rejected);
+  border: 1px solid rgba(217, 69, 69, 0.3);
+  padding: 2px 8px;
+  border-radius: var(--radius-sm);
+  text-transform: uppercase;
+}
+
+/* Order Controls */
+.orderControls {
+  border-top: 1px solid var(--border-color);
+  padding-top: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.controlGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.controlGroup label {
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--text-muted);
+}
+
+.btnRow {
+  display: flex;
+  gap: 12px;
+  align-items: flex-end;
+}
+
+.qtyBox {
+  width: 70px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.qtyBox label {
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--text-muted);
+}
+
+.qtyBox input {
+  text-align: center;
+  padding: 10px;
+}

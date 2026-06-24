@@ -1,0 +1,394 @@
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 40px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+/* Activation Screen (Not active user) */
+.activationCard {
+  max-width: 600px;
+  margin: 40px auto;
+  padding: 48px 40px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.sparkleIcon {
+  width: 70px;
+  height: 70px;
+  background: rgba(204, 164, 99, 0.1);
+  color: var(--accent-gold);
+  border-radius: var(--radius-full);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 24px;
+  border: 1px solid rgba(204, 164, 99, 0.2);
+}
+
+.title {
+  font-size: 2.5rem;
+  margin-bottom: 8px;
+}
+
+.subtitle {
+  font-size: 1.1rem;
+  color: var(--text-secondary);
+  margin-bottom: 32px;
+}
+
+.experienceBox {
+  width: 100%;
+  background: rgba(0, 0, 0, 0.15);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  padding: 30px;
+}
+
+.pendingState {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}
+
+.pulseContainer {
+  position: relative;
+  width: 70px;
+  height: 70px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 12px;
+}
+
+.pulseCircle {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border-radius: var(--radius-full);
+  background: rgba(223, 160, 55, 0.15);
+  animation: pulse 2s infinite ease-in-out;
+}
+
+@keyframes pulse {
+  0% { transform: scale(0.9); opacity: 0.2; }
+  50% { transform: scale(1.3); opacity: 0.8; }
+  100% { transform: scale(0.9); opacity: 0.2; }
+}
+
+.spinner {
+  animation: spin 1.2s linear infinite;
+  color: var(--status-pending);
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.pendingState h3 {
+  font-family: var(--font-sans);
+  font-size: 1.2rem;
+  color: var(--status-pending);
+}
+
+.instructionBadge {
+  margin-top: 8px;
+  background: rgba(223, 160, 55, 0.1);
+  color: var(--status-pending);
+  border: 1px solid rgba(223, 160, 55, 0.2);
+  padding: 6px 16px;
+  border-radius: var(--radius-full);
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.startState {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+
+.desc {
+  font-size: 1rem;
+  line-height: 1.6;
+}
+
+.startBtn {
+  font-size: 1.1rem;
+  padding: 14px 28px;
+  box-shadow: var(--shadow-gold);
+}
+
+.hint {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}
+
+/* Active Dashboard UI */
+.heroBanner {
+  padding: 40px;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  background: linear-gradient(135deg, rgba(26, 22, 19, 0.9) 0%, rgba(18, 16, 14, 0.9) 100%);
+}
+
+.heroDetails {
+  position: relative;
+  z-index: 2;
+}
+
+.welcomeText {
+  font-size: 0.95rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--accent-gold);
+  font-weight: 600;
+  display: block;
+  margin-bottom: 8px;
+}
+
+.heroDetails h2 {
+  font-size: 2.4rem;
+  margin-bottom: 16px;
+}
+
+.municipioTag {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--border-color);
+  padding: 8px 16px;
+  border-radius: var(--radius-full);
+  font-size: 0.95rem;
+}
+
+.heroImageOverlay {
+  position: absolute;
+  right: -50px;
+  top: -50px;
+  width: 300px;
+  height: 300px;
+  background: radial-gradient(circle, rgba(204, 164, 99, 0.08) 0%, transparent 70%);
+  z-index: 1;
+  pointer-events: none;
+}
+
+/* Actions Grid */
+.gridContainer {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 24px;
+}
+
+.gridCard {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding: 24px;
+  cursor: pointer;
+  position: relative;
+}
+
+.gridCard:hover .arrowIcon {
+  transform: translateX(4px);
+  color: var(--accent-gold);
+}
+
+.cardIcon {
+  width: 54px;
+  height: 54px;
+  border-radius: var(--radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.iconGold {
+  background: rgba(204, 164, 99, 0.1);
+  color: var(--accent-gold);
+}
+
+.iconTerracota {
+  background: rgba(194, 89, 63, 0.1);
+  color: var(--accent-terracota);
+}
+
+.iconBlue {
+  background: rgba(55, 142, 223, 0.1);
+  color: var(--status-completed);
+}
+
+.cardContent {
+  flex: 1;
+}
+
+.cardContent h3 {
+  font-family: var(--font-sans);
+  font-size: 1.2rem;
+  margin-bottom: 4px;
+}
+
+.cardContent p {
+  font-size: 0.85rem;
+  line-height: 1.4;
+}
+
+.cardBadge {
+  display: inline-block;
+  margin-top: 6px;
+  background: rgba(55, 142, 223, 0.15);
+  color: var(--status-completed);
+  font-size: 0.7rem;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: var(--radius-full);
+  text-transform: uppercase;
+}
+
+.arrowIcon {
+  color: var(--text-muted);
+  transition: transform var(--transition-fast), color var(--transition-fast);
+}
+
+/* Info Grid (Agenda & Notifications) */
+.infoGrid {
+  display: grid;
+  grid-template-columns: 1.2fr 0.8fr;
+  gap: 24px;
+}
+
+@media (max-width: 768px) {
+  .infoGrid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.infoCard {
+  padding: 28px;
+}
+
+.cardHeader {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 24px;
+  border-bottom: 1px solid var(--border-color);
+  padding-bottom: 12px;
+}
+
+.headerIcon {
+  color: var(--accent-gold);
+}
+
+.cardHeader h3 {
+  font-family: var(--font-sans);
+  font-size: 1.25rem;
+}
+
+/* Event List */
+.eventList {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.eventItem {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+}
+
+.eventDate {
+  width: 50px;
+  height: 50px;
+  background: var(--bg-tertiary);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  line-height: 1.1;
+  flex-shrink: 0;
+}
+
+.eventDay {
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.eventNum {
+  font-size: 1.1rem;
+  color: var(--accent-gold);
+}
+
+.eventText h4 {
+  font-family: var(--font-sans);
+  font-size: 0.95rem;
+  color: var(--text-primary);
+  margin-bottom: 2px;
+}
+
+.eventText p {
+  font-size: 0.8rem;
+}
+
+/* Notification list in dashboard */
+.notificationList {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.noNotifs {
+  color: var(--text-muted);
+  font-size: 0.85rem;
+  font-style: italic;
+}
+
+.notificationItem {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+}
+
+.notifIndicator {
+  width: 8px;
+  height: 8px;
+  border-radius: var(--radius-full);
+  background: transparent;
+  margin-top: 6px;
+  flex-shrink: 0;
+}
+
+.unreadDot {
+  background: var(--accent-gold);
+  box-shadow: 0 0 6px var(--accent-gold);
+}
+
+.notifBody p {
+  font-size: 0.85rem;
+  color: var(--text-primary);
+  line-height: 1.3;
+}
+
+.notifBody span {
+  font-size: 0.7rem;
+  color: var(--text-muted);
+  display: block;
+  margin-top: 2px;
+}

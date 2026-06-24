@@ -1,0 +1,286 @@
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 40px 20px;
+}
+
+.header {
+  margin-bottom: 32px;
+}
+
+.header h2 {
+  font-size: 2.2rem;
+  margin-bottom: 8px;
+}
+
+.header p {
+  font-size: 1.05rem;
+  color: var(--text-secondary);
+}
+
+.emptyCard {
+  max-width: 500px;
+  margin: 40px auto;
+  padding: 60px 40px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.emptyIcon {
+  color: var(--text-muted);
+  margin-bottom: 20px;
+  opacity: 0.5;
+}
+
+.emptyCard h2 {
+  font-size: 1.8rem;
+  margin-bottom: 8px;
+}
+
+.emptyCard p {
+  font-size: 0.95rem;
+  color: var(--text-secondary);
+}
+
+/* Order List */
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+
+/* Order Card */
+.orderCard {
+  overflow: hidden;
+}
+
+.orderTop {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: 20px 24px;
+  background: var(--bg-secondary);
+  border-bottom: 1px solid var(--border-color);
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.orderMeta {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.orderId {
+  font-size: 1rem;
+  color: var(--text-primary);
+}
+
+.orderId strong {
+  color: var(--accent-gold);
+}
+
+.metaRow {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.metaItem {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+
+.orderStatusBlock {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 4px;
+}
+
+.metaLabel {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  text-transform: uppercase;
+}
+
+@media (max-width: 600px) {
+  .orderTop {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .orderStatusBlock {
+    align-items: flex-start;
+  }
+}
+
+/* Items List */
+.itemsList {
+  padding: 20px 24px;
+  border-bottom: 1px solid var(--border-color);
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.breakdownHeader {
+  font-family: var(--font-sans);
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  border-bottom: 1px solid rgba(255,255,255,0.02);
+  padding-bottom: 8px;
+}
+
+.itemRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.95rem;
+  padding-bottom: 12px;
+  border-bottom: 1px dashed rgba(255,255,255,0.03);
+  gap: 16px;
+}
+
+.itemRow:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.itemMain {
+  flex: 1.5;
+  display: flex;
+  flex-direction: column;
+}
+
+.itemNameWrapper {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.itemName {
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.itemQty {
+  font-size: 0.8rem;
+  color: var(--accent-gold);
+  background: rgba(204, 164, 99, 0.1);
+  padding: 2px 8px;
+  border-radius: var(--radius-sm);
+  font-weight: 700;
+}
+
+.itemOwner {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  margin-top: 2px;
+}
+
+/* Item Status Badge */
+.itemStatusWrapper {
+  flex: 1.2;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2px;
+}
+
+.itemBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 4px 10px;
+  border-radius: var(--radius-sm);
+}
+
+.itemPending {
+  background: rgba(223, 160, 55, 0.1);
+  color: var(--status-pending);
+}
+
+.itemApproved {
+  background: rgba(76, 166, 76, 0.1);
+  color: var(--status-approved);
+}
+
+.itemRejected {
+  background: rgba(217, 69, 69, 0.1);
+  color: var(--status-rejected);
+}
+
+.rejectReason {
+  font-size: 0.75rem;
+  color: var(--status-rejected);
+  margin-top: 2px;
+}
+
+.itemPriceBlock {
+  flex: 0.8;
+  text-align: right;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+@media (max-width: 768px) {
+  .itemRow {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 8px;
+  }
+  .itemStatusWrapper {
+    align-items: flex-start;
+  }
+  .itemPriceBlock {
+    text-align: left;
+  }
+}
+
+/* Footer Card */
+.orderFooter {
+  padding: 16px 24px;
+  background: rgba(0,0,0,0.1);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.observations {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid var(--border-color);
+  padding: 8px 14px;
+  border-radius: var(--radius-sm);
+  max-width: 500px;
+}
+
+.totalRow {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-left: auto;
+}
+
+.totalRow span {
+  font-size: 0.95rem;
+  color: var(--text-secondary);
+}
+
+.totalAmount {
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: var(--accent-gold);
+}
