@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { useApp } from '../context/AppContext';
+import logoImg from '../assets/logo.png';
 import { 
   LayoutDashboard, 
   Users, 
@@ -36,7 +37,7 @@ export default function Sidebar() {
       {/* Mobile Header Bar */}
       <div className={styles.mobileHeader}>
         <div className={styles.mobileBrand}>
-          Panel <span className="gold-gradient-text">Admin</span>
+          <img src={logoImg} alt="Galería Café" className={styles.logoMobile} />
         </div>
         <button onClick={() => setIsOpen(!isOpen)} className={styles.toggleBtn}>
           {isOpen ? <X size={24} /> : <Menu size={24} />}
@@ -46,8 +47,7 @@ export default function Sidebar() {
       {/* Sidebar container */}
       <aside className={`${styles.sidebar} ${isOpen ? styles.sidebarOpen : ''}`}>
         <div className={styles.brand}>
-          <h3>Galería <span className="gold-gradient-text">Café</span></h3>
-          <span className={styles.subBrand}>Panel de Administración</span>
+          <img src={logoImg} alt="Galería Café" className={styles.logo} />
         </div>
 
         <nav className={styles.navMenu}>

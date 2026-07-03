@@ -162,7 +162,7 @@
 
 .qtyBtn:hover {
   color: var(--accent-gold);
-  background: rgba(255,255,255,0.03);
+  background: rgba(26, 17, 10, 0.05);
 }
 
 .qtyNum {
@@ -195,7 +195,7 @@
 
 .deleteBtn:hover {
   color: var(--status-rejected);
-  background: rgba(217, 69, 69, 0.05);
+  background: rgba(111, 29, 27, 0.06);
 }
 
 @media (max-width: 600px) {

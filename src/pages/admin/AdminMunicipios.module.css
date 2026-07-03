@@ -95,15 +95,16 @@
   align-items: center;
   justify-content: space-between;
   padding: 14px 20px;
-  background: rgba(0,0,0,0.15);
-  border: 1px solid var(--border-color);
+  background: var(--bg-card);
+  border: none;
+  box-shadow: var(--shadow-sm);
   border-radius: var(--radius-md);
   transition: all var(--transition-fast);
 }
 
 .item:hover {
   border-color: var(--text-muted);
-  background: rgba(255,255,255,0.01);
+  background: rgba(26, 17, 10, 0.03);
 }
 
 .name {
@@ -133,13 +134,13 @@
 .actionBtn:hover {
   color: var(--accent-gold);
   border-color: var(--accent-gold);
-  background: rgba(204, 164, 99, 0.05);
+  background: rgba(187, 148, 87, 0.06);
 }
 
 .deleteBtn:hover {
   color: var(--status-rejected);
   border-color: var(--status-rejected);
-  background: rgba(217, 69, 69, 0.05);
+  background: rgba(111, 29, 27, 0.06);
 }
 
 /* Inline Edit */

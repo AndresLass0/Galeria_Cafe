@@ -33,7 +33,7 @@ function RequireAuth() {
   const { user, loading } = useApp();
   if (loading) {
     return (
-      <div style={{ display: 'flex', height: '100vh', alignItems: 'center', justifyContent: 'center', backgroundColor: '#12100e', color: '#cca463' }}>
+      <div style={{ display: 'flex', height: '100vh', alignItems: 'center', justifyContent: 'center', backgroundColor: 'var(--bg-primary)', color: 'var(--accent-gold)' }}>
         <h2>Cargando Galería Café...</h2>
       </div>
     );
@@ -80,7 +80,7 @@ function AdminLayout() {
         paddingLeft: '260px', 
         paddingTop: '0', 
         paddingBottom: '40px',
-        backgroundColor: '#12100e',
+        backgroundColor: 'var(--bg-primary)',
         minHeight: '100vh',
         transition: 'padding var(--transition-normal)'
       }} className="admin-main-viewport">

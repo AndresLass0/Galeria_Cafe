@@ -67,7 +67,7 @@
 }
 
 .row:hover {
-  background: rgba(255,255,255,0.01);
+  background: rgba(26, 17, 10, 0.03);
 }
 
 .userCell {
@@ -111,7 +111,7 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: rgba(0,0,0,0.65);
+  background-color: var(--bg-card);
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
   display: flex;
@@ -163,7 +163,7 @@
 
 .closeBtn:hover {
   color: var(--text-primary);
-  background: rgba(255,255,255,0.03);
+  background: rgba(26, 17, 10, 0.05);
 }
 
 .modalText {

@@ -144,7 +144,7 @@
   align-items: center;
   font-size: 0.95rem;
   padding-bottom: 12px;
-  border-bottom: 1px dashed rgba(255,255,255,0.03);
+  border-bottom: 1px dashed rgba(26, 17, 10, 0.05);
   gap: 16px;
 }
 
@@ -173,7 +173,7 @@
 .itemQty {
   font-size: 0.8rem;
   color: var(--accent-gold);
-  background: rgba(204, 164, 99, 0.1);
+  background: rgba(111, 29, 27, 0.07);
   padding: 2px 8px;
   border-radius: var(--radius-sm);
   font-weight: 700;
@@ -249,7 +249,7 @@
 /* Footer Card */
 .orderFooter {
   padding: 16px 24px;
-  background: rgba(0,0,0,0.1);
+  background: var(--bg-card);
   display: flex;
   justify-content: space-between;
   align-items: center;

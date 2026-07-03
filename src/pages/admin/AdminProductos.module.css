@@ -27,7 +27,7 @@
 /* Expandable Form Card */
 .formCard {
   padding: 28px;
-  border-color: rgba(204, 164, 99, 0.2);
+  border-color: rgba(187, 148, 87, 0.25);
 }
 
 .formCard h3 {
@@ -96,7 +96,7 @@
   height: 180px;
   position: relative;
   overflow: hidden;
-  background-color: rgba(0,0,0,0.2);
+  background-color: var(--bg-card);
 }
 
 .productImage {
@@ -118,17 +118,17 @@
 }
 
 .cat_comidas {
-  background-color: #c2593f;
+  background-color: var(--color-secondary);
   color: white;
 }
 
 .cat_bebidas {
-  background-color: #cca463;
+  background-color: var(--color-gold);
   color: var(--bg-primary);
 }
 
 .cat_eventos {
-  background-color: #378edf;
+  background-color: var(--color-cultural);
   color: white;
 }
 
@@ -188,9 +188,9 @@
 }
 
 .notAvail {
-  background-color: rgba(217, 69, 69, 0.15);
+  background-color: rgba(111, 29, 27, 0.1);
   color: var(--status-rejected);
-  border: 1px solid rgba(217, 69, 69, 0.3);
+  border: 1px solid rgba(111, 29, 27, 0.25);
 }
 
 .actions {
@@ -217,11 +217,11 @@
 .actionBtn:hover {
   color: var(--accent-gold);
   border-color: var(--accent-gold);
-  background: rgba(204, 164, 99, 0.05);
+  background: rgba(187, 148, 87, 0.06);
 }
 
 .deleteBtn:hover {
   color: var(--status-rejected);
   border-color: var(--status-rejected);
-  background: rgba(217, 69, 69, 0.05);
+  background: rgba(111, 29, 27, 0.06);
 }

@@ -12,7 +12,7 @@ import {
   ChevronRight, 
   Loader2, 
   Sparkles,
-  Award
+  Coffee
 } from 'lucide-react';
 import styles from './HomeCliente.module.css';
 
@@ -34,7 +34,7 @@ export default function HomeCliente() {
   // Get active orders count
   const activeOrders = pedidos.filter(p => p.estado !== 'completado');
 
-  // Case 1 & 2: User is not active yet
+  // Case 1 & 2: User is not active yet (Keep same layout but update styling slightly to match the theme)
   if (!user?.activo) {
     const isPending = user?.solicitudActivacion === 'pendiente';
 
@@ -100,68 +100,66 @@ export default function HomeCliente() {
     );
   }
 
-  // Case 3: User is active
+  // Case 3: User is active (Aligned with the Admin Dashboard style)
   return (
     <div className={styles.container}>
-      {/* Hero Welcome banner */}
-      <div className={`${styles.heroBanner} glass-card animate-fade-in`}>
-        <div className={styles.heroDetails}>
-          <span className={styles.welcomeText}>¡Hola, {user.nombre.split(' ')[0]}!</span>
-          <h2>Experiencia Activa</h2>
-          <div className={styles.municipioTag}>
-            <MapPin size={18} />
-            <span>Mesa Asignada: <strong className="gold-gradient-text">{activeMunicipio}</strong></span>
-          </div>
+      {/* Header */}
+      <header className={styles.header}>
+        <div className={styles.headerInfo}>
+          <h1 className={styles.headerTitle}>Experiencia Activa</h1>
+          <p className={styles.headerSubtitle}>
+            ¡Hola, {user.nombre.split(' ')[0]}! • Mesa Asignada: <strong>{activeMunicipio}</strong>
+          </p>
         </div>
-        <div className={styles.heroImageOverlay} />
-      </div>
+      </header>
 
-      {/* Grid Quick Actions */}
-      <div className={styles.gridContainer}>
-        <Link to="/catalogo" className={`${styles.gridCard} glass-card`}>
-          <div className={`${styles.cardIcon} ${styles.iconGold}`}>
-            <ShoppingBag size={24} />
+      {/* Action cards resembling admin KPIs */}
+      <section className={styles.kpiGrid}>
+        {/* Ver Menú & Pedir (Red Card) */}
+        <Link to="/catalogo" className={`${styles.kpiCard} ${styles.kpiCardRed}`}>
+          <div className={styles.kpiCardHeader}>
+            <span className={styles.kpiLabel}>Catálogo</span>
+            <Coffee size={20} className={styles.kpiIcon} />
           </div>
-          <div className={styles.cardContent}>
-            <h3>Ver Menú & Pedir</h3>
-            <p>Explora nuestras comidas, bebidas y compra entradas para eventos.</p>
-          </div>
-          <ChevronRight className={styles.arrowIcon} size={20} />
+          <span className={styles.kpiValueText}>Ver Menú & Pedir</span>
+          <span className={styles.kpiSub}>Explora nuestros platos, bebidas y eventos.</span>
         </Link>
 
-        <Link to="/subpersonas" className={`${styles.gridCard} glass-card`}>
-          <div className={`${styles.cardIcon} ${styles.iconTerracota}`}>
-            <Users size={24} />
+        {/* Gestionar Grupo (Dark Coffee Card) */}
+        <Link to="/subpersonas" className={`${styles.kpiCard} ${styles.kpiCardDark}`}>
+          <div className={styles.kpiCardHeader}>
+            <span className={styles.kpiLabel}>Grupo / Mesa</span>
+            <Users size={20} className={styles.kpiIcon} />
           </div>
-          <div className={styles.cardContent}>
-            <h3>Gestionar Grupo</h3>
-            <p>Agrega amigos o acompañantes en tu mesa para dividir el pedido por persona.</p>
-          </div>
-          <ChevronRight className={styles.arrowIcon} size={20} />
+          <span className={styles.kpiValueText}>Gestionar Grupo</span>
+          <span className={styles.kpiSub}>Agrega acompañantes en tu mesa y divide cuentas.</span>
         </Link>
 
-        <Link to="/pedidos" className={`${styles.gridCard} glass-card`}>
-          <div className={`${styles.cardIcon} ${styles.iconBlue}`}>
-            <History size={24} />
+        {/* Mis Pedidos (Camel Card) */}
+        <Link to="/pedidos" className={`${styles.kpiCard} ${styles.kpiCardCamel}`}>
+          <div className={styles.kpiCardHeader}>
+            <span className={styles.kpiLabel}>Mis Compras</span>
+            <History size={20} className={styles.kpiIcon} />
           </div>
-          <div className={styles.cardContent}>
-            <h3>Mis Pedidos</h3>
-            <p>Mira el estado de tus compras e ítems pendientes por entregar.</p>
+          <div style={{ display: 'flex', alignItems: 'baseline', gap: '8px', flexWrap: 'wrap' }}>
+            <span className={styles.kpiValueText}>Mis Pedidos</span>
             {activeOrders.length > 0 && (
-              <span className={styles.cardBadge}>{activeOrders.length} activos</span>
+              <span className={styles.activeBadge}>{activeOrders.length} activos</span>
             )}
           </div>
-          <ChevronRight className={styles.arrowIcon} size={20} />
+          <span className={styles.kpiSub}>Mira tus platos y bebidas en proceso de entrega.</span>
         </Link>
-      </div>
+      </section>
 
-      {/* Banner / Info Grid */}
-      <div className={styles.infoGrid}>
-        {/* Cultural Billboard */}
-        <div className={`${styles.infoCard} glass-card`}>
+      {/* Main Grid Content (Restored 2 columns layout matching admin dashboard) */}
+      <div className={styles.dashboardGrid}>
+        {/* Left Column: Agenda Cultural */}
+        <div className={styles.card}>
           <div className={styles.cardHeader}>
-            <Calendar size={20} className={styles.headerIcon} />
-            <h3>Agenda Cultural de la Semana</h3>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+              <Calendar size={20} className={styles.headerIcon} />
+              <h2 className={styles.cardTitle}>Agenda Cultural de la Semana</h2>
+            </div>
           </div>
           <div className={styles.eventList}>
             <div className={styles.eventItem}>
@@ -187,11 +185,13 @@ export default function HomeCliente() {
           </div>
         </div>
 
-        {/* Recent Notifications */}
-        <div className={`${styles.infoCard} glass-card`}>
+        {/* Right Column: Actividad Reciente */}
+        <div className={styles.card}>
           <div className={styles.cardHeader}>
-            <Bell size={20} className={styles.headerIcon} />
-            <h3>Actividad Reciente</h3>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+              <Bell size={20} className={styles.headerIcon} />
+              <h2 className={styles.cardTitle}>Actividad Reciente</h2>
+            </div>
           </div>
           <div className={styles.notificationList}>
             {recentNotifs.length === 0 ? (

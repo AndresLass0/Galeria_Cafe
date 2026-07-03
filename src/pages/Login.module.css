@@ -1,17 +1,30 @@
+/* Login.module.css - Autumn Harvest */
+
 .pageWrapper {
   min-height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
   padding: 20px;
-  background: radial-gradient(circle at 10% 20%, rgba(26, 22, 19, 0.4) 0%, rgba(18, 16, 14, 1) 90%);
+  /* Fondo orgánico: capas de degradado, no plano */
+  background:
+    radial-gradient(ellipse at 70% 20%, rgba(153, 88, 42, 0.12) 0%, transparent 55%),
+    radial-gradient(ellipse at 20% 80%, rgba(111, 29, 27, 0.10) 0%, transparent 50%),
+    var(--bg-primary);
 }
 
 .loginCard {
   width: 100%;
   max-width: 440px;
-  padding: 40px;
+  padding: 44px 40px;
   text-align: center;
+  background: var(--bg-card);
+  border-radius: 20px;
+  box-shadow:
+    0 20px 40px -12px rgba(67, 40, 24, 0.18),
+    0 4px 8px -2px rgba(67, 40, 24, 0.08),
+    inset 0 1px 0 rgba(255, 245, 214, 0.9);
+  border: 1px solid rgba(187, 148, 87, 0.3);
 }
 
 .header {
@@ -22,21 +35,23 @@
 }
 
 .logoCircle {
-  width: 60px;
-  height: 60px;
-  background: rgba(204, 164, 99, 0.1);
-  color: var(--accent-gold);
-  border-radius: var(--radius-full);
+  width: 64px;
+  height: 64px;
+  background: linear-gradient(135deg, rgba(111, 29, 27, 0.1) 0%, rgba(187, 148, 87, 0.15) 100%);
+  color: var(--color-primary);
+  border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
   margin-bottom: 16px;
-  border: 1px solid rgba(204, 164, 99, 0.2);
+  border: 1.5px solid rgba(187, 148, 87, 0.4);
+  box-shadow: 0 4px 12px rgba(111, 29, 27, 0.12);
 }
 
 .header h2 {
   font-size: 2.2rem;
   margin-bottom: 4px;
+  color: var(--color-primary);
 }
 
 .header p {

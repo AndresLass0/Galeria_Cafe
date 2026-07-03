@@ -4,7 +4,7 @@
   align-items: center;
   justify-content: center;
   padding: 40px 20px;
-  background: radial-gradient(circle at 10% 20%, rgba(26, 22, 19, 0.4) 0%, rgba(18, 16, 14, 1) 90%);
+  background: radial-gradient(circle at 10% 20%, var(--bg-card) 0%, var(--bg-primary) 90%);
 }
 
 .registerCard {

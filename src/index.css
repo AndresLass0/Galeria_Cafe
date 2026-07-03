@@ -1,44 +1,67 @@
-@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap');
 
 :root {
-  --font-sans: 'Outfit', sans-serif;
+  /* Fuentes */
+  --font-sans: 'Nunito', sans-serif;
   --font-serif: 'Playfair Display', serif;
 
-  /* Colors */
-  --bg-primary: #12100e;
-  --bg-secondary: #1a1613;
-  --bg-tertiary: #25201c;
-  --bg-card: rgba(26, 22, 19, 0.75);
-  
-  --text-primary: #f8f6f4;
-  --text-secondary: #b5aba2;
-  --text-muted: #7d7268;
+  /* ── Paleta de Colores Exclusiva Galería Café ── */
+  --linen: #F5EFE6;
+  --navajo-white: #FAD9A3;
+  --blood-red: #8D0D0D;
+  --dark-coffee: #432818;
+  --camel: #BB9457;
 
-  --accent-gold: #cca463;
-  --accent-gold-hover: #e0bc7f;
-  --accent-terracota: #c2593f;
-  --accent-terracota-hover: #d66b51;
+  /* Mapeos de la antigua paleta para compatibilidad en todo el sitio */
+  --color-sidebar:    var(--navajo-white);
+  --color-main-bg:   var(--linen);
+  --color-card:      #ffffff;
+  --color-primary:   var(--blood-red);
+  --color-secondary: var(--camel);
+  --color-cultural:  #2d6a4f; /* Mantenemos un verde para éxito si es necesario */
+  --color-gold:      var(--camel);
+  --color-text:      var(--dark-coffee);
+  --color-text-soft: #634735;
+  --color-text-muted:#8a7060;
 
-  --status-pending: #dfa037;
-  --status-approved: #4ca64c;
-  --status-rejected: #d94545;
-  --status-completed: #378edf;
+  /* Mapeo Semántico */
+  --bg-primary:   var(--linen);
+  --bg-secondary: var(--navajo-white);
+  --bg-tertiary:  #E8E2D9;
+  --bg-card:      #ffffff;
 
-  --border-color: #2e2620;
-  --border-focus: #cca463;
+  --text-primary:   var(--dark-coffee);
+  --text-secondary: #634735;
+  --text-muted:     #8a7060;
+  --text-on-dark:   #ffffff;
 
-  --shadow-sm: 0 2px 4px rgba(0,0,0,0.25);
-  --shadow-md: 0 4px 10px rgba(0,0,0,0.4);
-  --shadow-lg: 0 10px 25px rgba(0,0,0,0.6);
-  --shadow-gold: 0 0 15px rgba(204, 164, 99, 0.2);
+  /* Acentos */
+  --accent-gold:         var(--blood-red);
+  --accent-gold-hover:   #6b0a0a;
+  --accent-terracota:    var(--camel);
+  --accent-terracota-hover: #a17c46;
 
-  --transition-fast: 0.15s ease;
+  --status-pending:   #b37d14;
+  --status-approved:  #2d6a4f;
+  --status-rejected:  var(--blood-red);
+  --status-completed: #1a5fb4;
+
+  --border-color: rgba(187, 148, 87, 0.3);
+  --border-focus: var(--blood-red);
+
+  /* Sombras */
+  --shadow-sm: 0 4px 6px -1px rgba(67, 40, 24, 0.05), 0 2px 4px -1px rgba(67, 40, 24, 0.03);
+  --shadow-md: 0 10px 15px -3px rgba(67, 40, 24, 0.08), 0 4px 6px -2px rgba(67, 40, 24, 0.04);
+  --shadow-lg: 0 20px 25px -5px rgba(67, 40, 24, 0.12), 0 10px 10px -5px rgba(67, 40, 24, 0.05);
+  --shadow-gold: 0 8px 16px -4px rgba(141, 13, 13, 0.15);
+
+  --transition-fast:   0.15s ease;
   --transition-normal: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  --transition-slow: 0.5s ease;
+  --transition-slow:   0.5s ease;
 
-  --radius-sm: 6px;
-  --radius-md: 12px;
-  --radius-lg: 20px;
+  --radius-sm:   6px;
+  --radius-md:   12px;
+  --radius-lg:   20px;
   --radius-full: 9999px;
 }
 
@@ -50,6 +73,7 @@
 
 body {
   background-color: var(--bg-primary);
+  background-image: radial-gradient(ellipse at top, #fff3c4 0%, var(--bg-primary) 70%);
   color: var(--text-primary);
   font-family: var(--font-sans);
   min-height: 100vh;
@@ -83,18 +107,19 @@ a:hover {
 
 /* Scrollbar */
 ::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
+  width: 6px;
+  height: 6px;
 }
 ::-webkit-scrollbar-track {
-  background: var(--bg-primary);
+  background: var(--bg-tertiary);
 }
 ::-webkit-scrollbar-thumb {
-  background: var(--border-color);
+  background: var(--color-gold);
   border-radius: var(--radius-full);
+  opacity: 0.6;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--text-muted);
+  background: var(--color-secondary);
 }
 
 /* Layout utilities */
@@ -104,20 +129,30 @@ a:hover {
   padding: 0 20px;
 }
 
-/* Glassmorphism card */
+/* Glassmorphism card - Autumn Harvest */
 .glass-card {
   background: var(--bg-card);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  border: 1px solid var(--border-color);
+  /* Sombra cálida interna, no pixel-perfect */
+  box-shadow: var(--shadow-sm), inset 0 1px 0 rgba(255, 245, 214, 0.8);
+  border: 1px solid rgba(187, 148, 87, 0.25);
   border-radius: var(--radius-md);
-  box-shadow: var(--shadow-md);
   transition: var(--transition-normal);
 }
 
 .glass-card:hover {
-  border-color: var(--text-muted);
-  box-shadow: var(--shadow-lg);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md), inset 0 1px 0 rgba(255, 245, 214, 0.8);
+  border-color: rgba(187, 148, 87, 0.45);
+}
+
+.glass-card-dark {
+  background-color: rgba(35, 28, 24, 0.45);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(187, 148, 87, 0.2); /* Borde sutil Oro Viejo */
+  border-radius: var(--radius-md, 12px);
+  box-shadow: var(--shadow-md);
+  transition: all var(--transition-normal, 0.3s cubic-bezier(0.4, 0, 0.2, 1));
 }
 
 /* Buttons with micro-animations */
@@ -163,7 +198,7 @@ a:hover {
 
 .btn-primary {
   background-color: var(--accent-gold);
-  color: var(--bg-primary);
+  color: var(--bg-card); /* Texto claro de espuma de café en botón rojo */
 }
 
 .btn-primary:hover {
@@ -174,12 +209,13 @@ a:hover {
 .btn-secondary {
   background-color: transparent;
   color: var(--text-primary);
-  border: 1px solid var(--border-color);
+  border: 1.5px solid var(--color-gold);
 }
 
 .btn-secondary:hover {
-  background-color: var(--bg-tertiary);
-  border-color: var(--text-muted);
+  background-color: rgba(187, 148, 87, 0.12);
+  border-color: var(--color-secondary);
+  color: var(--color-secondary);
 }
 
 .btn-terracota {
@@ -226,9 +262,9 @@ a:hover {
 
 .form-control {
   width: 100%;
-  background-color: var(--bg-tertiary);
+  background-color: var(--bg-primary); /* Crema Suave, no blanca */
   color: var(--text-primary);
-  border: 1px solid var(--border-color);
+  border: 1.5px solid rgba(187, 148, 87, 0.4);
   padding: 12px 16px;
   font-size: 0.95rem;
   font-family: var(--font-sans);
@@ -238,8 +274,9 @@ a:hover {
 
 .form-control:focus {
   outline: none;
-  border-color: var(--border-focus);
-  box-shadow: var(--shadow-gold);
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px rgba(111, 29, 27, 0.1);
+  background-color: var(--bg-card);
 }
 
 .form-control::placeholder {
@@ -271,9 +308,9 @@ a:hover {
 }
 
 .badge-rejected {
-  background-color: rgba(217, 69, 69, 0.15);
+  background-color: rgba(111, 29, 27, 0.1);
   color: var(--status-rejected);
-  border: 1px solid rgba(217, 69, 69, 0.3);
+  border: 1px solid rgba(111, 29, 27, 0.25);
 }
 
 .badge-completed {
@@ -299,7 +336,7 @@ a:hover {
 
 /* Custom UI Items */
 .gold-gradient-text {
-  background: linear-gradient(135deg, var(--accent-gold) 0%, #f5e4c3 100%);
+  background: linear-gradient(135deg, var(--accent-gold) 0%, var(--accent-terracota) 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }

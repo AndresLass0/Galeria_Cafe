@@ -31,6 +31,10 @@
   align-items: center;
   gap: 20px;
   padding: 24px;
+  background: var(--bg-card);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sm);
+  border: none;
 }
 
 .kpiIcon {
@@ -44,18 +48,18 @@
 }
 
 .iconGold {
-  background: rgba(204, 164, 99, 0.1);
-  color: var(--accent-gold);
+  background: linear-gradient(135deg, rgba(111, 29, 27, 0.1) 0%, rgba(187, 148, 87, 0.12) 100%);
+  color: var(--color-primary);
 }
 
 .iconGreen {
-  background: rgba(76, 166, 76, 0.1);
-  color: var(--status-approved);
+  background: rgba(28, 77, 74, 0.1);
+  color: var(--color-cultural);
 }
 
 .iconBlue {
-  background: rgba(55, 142, 223, 0.1);
-  color: var(--status-completed);
+  background: rgba(28, 77, 74, 0.08);
+  color: var(--color-cultural);
 }
 
 .kpiInfo {
@@ -64,18 +68,19 @@
 }
 
 .kpiLabel {
-  font-size: 0.8rem;
-  font-weight: 600;
+  font-size: 0.7rem;
+  font-weight: 800;
   text-transform: uppercase;
   color: var(--text-muted);
-  letter-spacing: 0.05em;
+  letter-spacing: 0.1em;
 }
 
 .kpiValue {
-  font-size: 1.8rem;
-  font-weight: 700;
+  font-size: 2.6rem;
+  font-weight: 800;
   color: var(--text-primary);
-  line-height: 1.2;
+  line-height: 1.1;
+  margin-top: 4px;
 }
 
 .kpiSub {
@@ -142,15 +147,17 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 12px 16px;
-  background: rgba(0,0,0,0.15);
-  border: 1px solid var(--border-color);
+  padding: 16px 20px; /* Más aire */
+  background: var(--bg-card);
+  border: none;
+  box-shadow: var(--shadow-sm);
   border-radius: var(--radius-md);
   transition: all var(--transition-fast);
 }
 
 .orderItem:hover {
-  border-color: var(--text-muted);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
 }
 
 .orderMain {
@@ -213,9 +220,10 @@
   display: flex;
   align-items: center;
   gap: 16px;
-  padding: 16px;
-  background: rgba(0,0,0,0.15);
-  border: 1px solid var(--border-color);
+  padding: 20px 24px; /* Más aire */
+  background: var(--bg-card);
+  border: none;
+  box-shadow: var(--shadow-sm);
   border-radius: var(--radius-md);
   cursor: pointer;
   text-decoration: none;
@@ -223,8 +231,8 @@
 }
 
 .alertItem:hover {
-  border-color: var(--text-muted);
-  background: rgba(255,255,255,0.01);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
 }
 
 .alertIcon {

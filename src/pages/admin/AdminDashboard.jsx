@@ -8,9 +8,10 @@ import {
   DollarSign, 
   Clock, 
   ChevronRight,
-  TrendingUp
+  Search,
+  ChevronDown
 } from 'lucide-react';
-import styles from './AdminDashboard.module.css';
+import styles from './Dashboard.module.css';
 
 export default function AdminDashboard() {
   const { 
@@ -18,7 +19,8 @@ export default function AdminDashboard() {
     allPedidos, 
     productos, 
     municipios, 
-    loadAdminData 
+    loadAdminData,
+    user 
   } = useApp();
 
   useEffect(() => {
@@ -50,63 +52,62 @@ export default function AdminDashboard() {
 
   return (
     <div className={styles.container}>
-      <div className={`${styles.header} animate-fade-in`}>
-        <h2>Panel de Control</h2>
-        <p>Resumen general del estado de Galería Café.</p>
-      </div>
+      {/* Header */}
+      <header className={styles.header}>
+        <div className={styles.headerInfo}>
+          <h1 className={styles.headerTitle}>Panel de Control</h1>
+          <p className={styles.headerSubtitle}>Resumen general del estado de Galería Café.</p>
+        </div>
+      </header>
 
       {/* KPI Cards Grid */}
-      <div className={styles.kpiGrid}>
-        <div className={`${styles.kpiCard} glass-card`}>
-          <div className={`${styles.kpiIcon} ${styles.iconGold}`}>
-            <Users size={24} />
-          </div>
-          <div className={styles.kpiInfo}>
+      <section className={styles.kpiGrid}>
+        {/* Total Clientes (Neutral Oscura) */}
+        <div className={`${styles.kpiCard} ${styles.kpiCardDark}`}>
+          <div className={styles.kpiCardHeader}>
             <span className={styles.kpiLabel}>Total Clientes</span>
-            <span className={styles.kpiValue}>{totalClientes}</span>
+            <Users size={20} className={styles.kpiIcon} />
           </div>
+          <span className={styles.kpiValue}>{totalClientes}</span>
         </div>
 
-        <div className={`${styles.kpiCard} glass-card`}>
-          <div className={`${styles.kpiIcon} ${styles.iconGreen}`}>
-            <CheckCircle size={24} />
-          </div>
-          <div className={styles.kpiInfo}>
+        {/* Clientes Activos (KPI Clave - Blood Red) */}
+        <div className={`${styles.kpiCard} ${styles.kpiCardRed}`}>
+          <div className={styles.kpiCardHeader}>
             <span className={styles.kpiLabel}>Clientes Activos</span>
-            <span className={styles.kpiValue}>{clientesActivos}</span>
+            <CheckCircle size={20} className={styles.kpiIcon} />
           </div>
+          <span className={styles.kpiValue}>{clientesActivos}</span>
         </div>
 
-        <div className={`${styles.kpiCard} glass-card`}>
-          <div className={`${styles.kpiIcon} ${styles.iconBlue}`}>
-            <ShoppingBag size={24} />
-          </div>
-          <div className={styles.kpiInfo}>
+        {/* Pedidos Hoy (Neutral Clara) */}
+        <div className={`${styles.kpiCard} ${styles.kpiCardLight}`}>
+          <div className={styles.kpiCardHeader}>
             <span className={styles.kpiLabel}>Pedidos Hoy</span>
-            <span className={styles.kpiValue}>{pedidosHoy.length}</span>
-            <span className={styles.kpiSub}>${ventasHoy.toLocaleString()} COP</span>
+            <ShoppingBag size={20} className={styles.kpiIcon} />
           </div>
+          <span className={styles.kpiValue}>{pedidosHoy.length}</span>
+          <span className={styles.kpiSub}>${ventasHoy.toLocaleString()} COP</span>
         </div>
 
-        <div className={`${styles.kpiCard} glass-card`}>
-          <div className={`${styles.kpiIcon} ${styles.iconGold}`}>
-            <DollarSign size={24} />
-          </div>
-          <div className={styles.kpiInfo}>
+        {/* Ventas Totales (Acento - Camel) */}
+        <div className={`${styles.kpiCard} ${styles.kpiCardCamel}`}>
+          <div className={styles.kpiCardHeader}>
             <span className={styles.kpiLabel}>Ventas Totales</span>
-            <span className={styles.kpiValue}>${ventasTotales.toLocaleString()}</span>
-            <span className={styles.kpiSub}>Pedidos entregados</span>
+            <DollarSign size={20} className={styles.kpiIcon} />
           </div>
+          <span className={styles.kpiValue}>${ventasTotales.toLocaleString()}</span>
+          <span className={styles.kpiSub}>Pedidos entregados</span>
         </div>
-      </div>
+      </section>
 
-      {/* Main Grid Content */}
+      {/* Main Grid Content (Restored 2 columns layout) */}
       <div className={styles.dashboardGrid}>
         {/* Left Column: Recent Orders */}
-        <div className={`${styles.gridCol} glass-card`}>
-          <div className={styles.colHeader}>
-            <h3>Pedidos Recientes</h3>
-            <Link to="/admin/pedidos" className={styles.viewAll}>
+        <div className={styles.card}>
+          <div className={styles.cardHeader}>
+            <h2 className={styles.cardTitle}>Pedidos Recientes</h2>
+            <Link to="/admin/pedidos" className={styles.viewAllLink}>
               Ver todos <ChevronRight size={16} />
             </Link>
           </div>
@@ -122,8 +123,8 @@ export default function AdminDashboard() {
                 return (
                   <div key={o.id} className={styles.orderItem}>
                     <div className={styles.orderMain}>
-                      <strong>{orderUser}</strong>
-                      <span>Mesa: {muniName} • {new Date(o.fecha).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</span>
+                      <span className={styles.orderUser}>{orderUser}</span>
+                      <span className={styles.orderSub}>Mesa: {muniName} • {new Date(o.fecha).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</span>
                     </div>
                     <div className={styles.orderRight}>
                       <span className={styles.orderTotal}>${o.total.toLocaleString()}</span>
@@ -137,9 +138,9 @@ export default function AdminDashboard() {
         </div>
 
         {/* Right Column: Attention needed list */}
-        <div className={`${styles.gridCol} glass-card`}>
-          <div className={styles.colHeader}>
-            <h3>Acción Requerida</h3>
+        <div className={styles.card}>
+          <div className={styles.cardHeader}>
+            <h2 className={styles.cardTitle}>Acción Requerida</h2>
           </div>
 
           <div className={styles.alertsList}>
@@ -149,8 +150,8 @@ export default function AdminDashboard() {
                 <Users size={20} />
               </div>
               <div className={styles.alertContent}>
-                <h4>Aprobaciones de Registro</h4>
-                <p>{pendingUsers.length} clientes esperando ser aprobados en el sistema.</p>
+                <h4 className={styles.alertTitle}>Aprobaciones de Registro</h4>
+                <p className={styles.alertDesc}>{pendingUsers.length} clientes esperando ser aprobados en el sistema.</p>
               </div>
               <ChevronRight size={18} className={styles.alertArrow} />
             </Link>
@@ -161,8 +162,8 @@ export default function AdminDashboard() {
                 <Clock size={20} />
               </div>
               <div className={styles.alertContent}>
-                <h4>Solicitudes de Mesa (Activación)</h4>
-                <p>{pendingActivations.length} clientes esperando asignación de municipio/mesa.</p>
+                <h4 className={styles.alertTitle}>Solicitudes de Mesa</h4>
+                <p className={styles.alertDesc}>{pendingActivations.length} clientes esperando asignación de municipio/mesa.</p>
               </div>
               <ChevronRight size={18} className={styles.alertArrow} />
             </Link>
@@ -173,8 +174,8 @@ export default function AdminDashboard() {
                 <ShoppingBag size={20} />
               </div>
               <div className={styles.alertContent}>
-                <h4>Pedidos por Entregar</h4>
-                <p>
+                <h4 className={styles.alertTitle}>Pedidos por Entregar</h4>
+                <p className={styles.alertDesc}>
                   {allPedidos.filter(p => p.estado === 'pendiente' || p.estado === 'en_preparacion').length} pedidos activos en proceso de preparación.
                 </p>
               </div>

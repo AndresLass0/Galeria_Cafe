@@ -96,8 +96,9 @@
 }
 
 .clientCard {
-  background: rgba(0,0,0,0.15);
-  border: 1px solid var(--border-color);
+  background: var(--bg-card);
+  border: none;
+  box-shadow: var(--shadow-sm);
   border-radius: var(--radius-md);
   padding: 20px;
   display: flex;
