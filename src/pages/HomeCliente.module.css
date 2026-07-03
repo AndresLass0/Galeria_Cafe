@@ -7,6 +7,49 @@
   gap: 32px;
 }
 
+/* Top bar for non-active users (logout access) */
+.topBar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 20px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+.topBarUser {
+  font-size: 0.95rem;
+  color: var(--text-secondary);
+}
+
+.topBarUser strong {
+  color: var(--accent-gold);
+}
+
+.topBarLogout {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 18px;
+  background: rgba(194, 89, 63, 0.1);
+  color: var(--accent-terracota);
+  border: 1px solid rgba(194, 89, 63, 0.25);
+  border-radius: var(--radius-full);
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.topBarLogout:hover {
+  background: rgba(194, 89, 63, 0.2);
+  border-color: rgba(194, 89, 63, 0.4);
+  transform: translateY(-1px);
+}
+
 /* Activation Screen (Not active user) */
 .activationCard {
   max-width: 600px;
@@ -391,4 +434,69 @@
   color: var(--text-muted);
   display: block;
   margin-top: 2px;
+}
+
+/* Elegant Glassmorphic Modal */
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(15px);
+  -webkit-backdrop-filter: blur(15px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 20px;
+}
+
+.modalCard {
+  max-width: 480px;
+  width: 100%;
+  padding: 36px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  border: 1px solid rgba(204, 164, 99, 0.25);
+  box-shadow: 0 0 30px rgba(204, 164, 99, 0.1);
+}
+
+.modalIcon {
+  width: 60px;
+  height: 60px;
+  border-radius: var(--radius-full);
+  background: rgba(204, 164, 99, 0.1);
+  color: var(--accent-gold);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(204, 164, 99, 0.2);
+  margin-bottom: 8px;
+}
+
+.modalHeader h2 {
+  font-size: 1.8rem;
+  font-family: var(--font-serif);
+}
+
+.modalBody p {
+  font-size: 1rem;
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+
+.modalFooter {
+  display: flex;
+  gap: 16px;
+  width: 100%;
+  margin-top: 10px;
+}
+
+.modalFooter button {
+  flex: 1;
 }

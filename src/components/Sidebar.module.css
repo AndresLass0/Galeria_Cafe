@@ -103,8 +103,8 @@
   justify-content: center;
   gap: 8px;
   background-color: transparent;
-  border: 1px solid var(--border-color);
-  color: var(--text-secondary);
+  border: 1px solid #cca463;
+  color: #cca463;
   padding: 10px;
   border-radius: var(--radius-md);
   cursor: pointer;
@@ -113,9 +113,9 @@
 }
 
 .logoutBtn:hover {
-  color: var(--status-rejected);
-  border-color: var(--status-rejected);
-  background-color: rgba(217, 69, 69, 0.05);
+  color: #ffffff;
+  border-color: #cca463;
+  background-color: rgba(204, 164, 99, 0.15);
 }
 
 /* Mobile responsive styling */

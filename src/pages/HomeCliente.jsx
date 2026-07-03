@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useApp } from '../context/AppContext';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { 
   Play, 
   MapPin, 
@@ -12,18 +12,63 @@ import {
   ChevronRight, 
   Loader2, 
   Sparkles,
-  Award
+  Award,
+  LogOut
 } from 'lucide-react';
 import styles from './HomeCliente.module.css';
 
 export default function HomeCliente() {
-  const { user, requestExperience, municipios, notifications, pedidos } = useApp();
+  const { user, requestExperience, municipios, notifications, pedidos, logout } = useApp();
+  const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
+  const [showNotifModal, setShowNotifModal] = useState(() => {
+    if (!user) return false;
+    // Show modal if not active, notifications permission is default, and not prompted yet
+    const prompted = localStorage.getItem('gc_notif_prompted_' + user.id);
+    const hasDefaultPermission = 'Notification' in window && Notification.permission === 'default';
+    return !user.activo && !prompted && hasDefaultPermission;
+  });
 
   const handleStartExperience = async () => {
     setLoading(true);
     await requestExperience();
     setLoading(false);
+  };
+
+  const handleLogout = async () => {
+    await logout();
+    navigate('/login', { replace: true });
+  };
+
+  const handleAcceptNotifications = async () => {
+    localStorage.setItem('gc_notif_prompted_' + user.id, 'true');
+    setShowNotifModal(false);
+    
+    if ('Notification' in window) {
+      try {
+        const permission = await Notification.requestPermission();
+        if (permission === 'granted') {
+          try {
+            new Notification('Galería Café', {
+              body: '¡Notificaciones activadas con éxito!',
+              icon: '/favicon.ico'
+            });
+          } catch (e) {
+            console.log("Notification API error (non-fatal):", e);
+          }
+        }
+      } catch (e) {
+        console.error("Error requesting notifications:", e);
+      }
+    }
+    
+    // Automatically start experience
+    await handleStartExperience();
+  };
+
+  const handleDeclineNotifications = () => {
+    localStorage.setItem('gc_notif_prompted_' + user.id, 'true');
+    setShowNotifModal(false);
   };
 
   const activeMunicipio = municipios.find(m => m.id === user?.municipioId)?.nombre || '';
@@ -40,6 +85,40 @@ export default function HomeCliente() {
 
     return (
       <div className={styles.container}>
+        {/* Top bar with user info and logout */}
+        <div className={styles.topBar}>
+          <span className={styles.topBarUser}>Hola, <strong>{user?.nombre?.split(' ')[0]}</strong></span>
+          <button onClick={handleLogout} className={styles.topBarLogout}>
+            <LogOut size={18} />
+            Cerrar Sesión
+          </button>
+        </div>
+
+        {showNotifModal && (
+          <div className={styles.modalOverlay}>
+            <div className={`${styles.modalCard} glass-card animate-fade-in`}>
+              <div className={styles.modalIcon}>
+                <Bell size={28} />
+              </div>
+              <div className={styles.modalHeader}>
+                <h2>Activar Notificaciones</h2>
+              </div>
+              <div className={styles.modalBody}>
+                <p>
+                  Para avisarte cuando tu pedido esté listo y mejorar tu experiencia, por favor acepta las notificaciones.
+                </p>
+              </div>
+              <div className={styles.modalFooter}>
+                <button onClick={handleDeclineNotifications} className="btn btn-secondary">
+                  Más tarde
+                </button>
+                <button onClick={handleAcceptNotifications} className="btn btn-primary">
+                  Aceptar
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
         <div className={`${styles.activationCard} glass-card animate-fade-in`}>
           <div className={styles.sparkleIcon}>
             <Sparkles size={32} />

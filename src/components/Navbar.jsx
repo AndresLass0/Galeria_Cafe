@@ -27,7 +27,12 @@ export default function Navbar() {
 
   const handleLogout = async () => {
     await logout();
-    navigate('/login');
+    navigate('/', { replace: true });
+  };
+
+  const handleMobileLogout = async () => {
+    await handleLogout();
+    setMobileMenuOpen(false);
   };
 
   const toggleNotifications = () => {
@@ -120,6 +125,7 @@ export default function Navbar() {
             
             <button onClick={handleLogout} className={styles.logoutBtn} title="Cerrar Sesión">
               <LogOut size={18} />
+              <span>Cerrar Sesión</span>
             </button>
           </div>
 
@@ -128,38 +134,38 @@ export default function Navbar() {
             {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
           </button>
         </div>
-      </div>
 
-      {/* Mobile Drawer Menu */}
-      {mobileMenuOpen && (
-        <div className={styles.mobileNav}>
-          <Link to="/" className={`${styles.mobileNavLink} ${isActive('/') ? styles.mobileActive : ''}`} onClick={() => setMobileMenuOpen(false)}>
-            <Home size={18} /> Inicio
-          </Link>
-          
-          {user.activo && (
-            <>
-              <Link to="/catalogo" className={`${styles.mobileNavLink} ${isActive('/catalogo') ? styles.mobileActive : ''}`} onClick={() => setMobileMenuOpen(false)}>
-                <Utensils size={18} /> Menú Catálogo
-              </Link>
-              <Link to="/subpersonas" className={`${styles.mobileNavLink} ${isActive('/subpersonas') ? styles.mobileActive : ''}`} onClick={() => setMobileMenuOpen(false)}>
-                <Users size={18} /> Gestionar Grupo
-              </Link>
-              <Link to="/pedidos" className={`${styles.mobileNavLink} ${isActive('/pedidos') ? styles.mobileActive : ''}`} onClick={() => setMobileMenuOpen(false)}>
-                <FileText size={18} /> Mis Pedidos
-              </Link>
-            </>
-          )}
-          
-          <Link to="/perfil" className={`${styles.mobileNavLink} ${isActive('/perfil') ? styles.mobileActive : ''}`} onClick={() => setMobileMenuOpen(false)}>
-            <User size={18} /> Mi Perfil ({user.nombre})
-          </Link>
-          
-          <button onClick={() => { handleLogout(); setMobileMenuOpen(false); }} className={`${styles.mobileNavLink} ${styles.mobileLogout}`}>
-            <LogOut size={18} /> Cerrar Sesión
-          </button>
-        </div>
-      )}
+        {/* Mobile Drawer Menu */}
+        {mobileMenuOpen && (
+          <div className={styles.mobileNav}>
+            <Link to="/" className={`${styles.mobileNavLink} ${isActive('/') ? styles.mobileActive : ''}`} onClick={() => setMobileMenuOpen(false)}>
+              <Home size={18} /> Inicio
+            </Link>
+            
+            {user.activo && (
+              <>
+                <Link to="/catalogo" className={`${styles.mobileNavLink} ${isActive('/catalogo') ? styles.mobileActive : ''}`} onClick={() => setMobileMenuOpen(false)}>
+                  <Utensils size={18} /> Menú Catálogo
+                </Link>
+                <Link to="/subpersonas" className={`${styles.mobileNavLink} ${isActive('/subpersonas') ? styles.mobileActive : ''}`} onClick={() => setMobileMenuOpen(false)}>
+                  <Users size={18} /> Gestionar Grupo
+                </Link>
+                <Link to="/pedidos" className={`${styles.mobileNavLink} ${isActive('/pedidos') ? styles.mobileActive : ''}`} onClick={() => setMobileMenuOpen(false)}>
+                  <FileText size={18} /> Mis Pedidos
+                </Link>
+              </>
+            )}
+            
+            <Link to="/perfil" className={`${styles.mobileNavLink} ${isActive('/perfil') ? styles.mobileActive : ''}`} onClick={() => setMobileMenuOpen(false)}>
+              <User size={18} /> Mi Perfil ({user.nombre})
+            </Link>
+            
+            <button onClick={handleMobileLogout} className={`${styles.mobileNavLink} ${styles.mobileLogout}`}>
+              <LogOut size={18} /> Cerrar Sesión
+            </button>
+          </div>
+        )}
+      </div>
     </nav>
   );
 }
