@@ -33,9 +33,16 @@ import AdminEstadisticas from './pages/admin/AdminEstadisticas';
 function RequireAuth() {
   const { user, loading } = useApp();
   if (loading) {
+    const text = "Cargando Galería Café...";
     return (
-      <div style={{ display: 'flex', height: '100vh', alignItems: 'center', justifyContent: 'center', backgroundColor: 'var(--bg-primary)', color: 'var(--accent-gold)' }}>
-        <h2>Cargando Galería Café...</h2>
+      <div style={{ display: 'flex', flexDirection: 'column', height: '100vh', alignItems: 'center', justifyContent: 'center', backgroundColor: 'var(--bg-primary)' }}>
+        <div className="wavy-loader">
+          {text.split('').map((char, index) => (
+            <span key={index} style={{ animationDelay: `${index * 0.07}s` }}>
+              {char === ' ' ? '\u00A0' : char}
+            </span>
+          ))}
+        </div>
       </div>
     );
   }

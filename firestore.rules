@@ -10,15 +10,15 @@ service cloud.firestore {
       );
     }
 
-    // Municipios: anyone authenticated can read, only admin can write
+    // Municipios: anyone can read, only admin can write
     match /municipios/{docId} {
-      allow read: if request.auth != null;
+      allow read: if true;
       allow write: if isAdmin();
     }
 
-    // Productos: anyone authenticated can read, only admin can write
+    // Productos: anyone can read, only admin can write
     match /productos/{docId} {
-      allow read: if request.auth != null;
+      allow read: if true;
       allow write: if isAdmin();
     }
 

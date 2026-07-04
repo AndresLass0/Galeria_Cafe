@@ -12,7 +12,8 @@ import {
   ChevronRight, 
   Loader2, 
   Sparkles,
-  Coffee
+  Coffee,
+  LogOut
 } from 'lucide-react';
 import styles from './HomeCliente.module.css';
 

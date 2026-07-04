@@ -35,7 +35,7 @@ export default function Login() {
     try {
       let loggedUser;
       if (role === 'admin') {
-        loggedUser = await login('admin@galeriacafe.com', 'admin');
+        loggedUser = await login('admin@galeriacafe.com', 'admin123');
         navigate('/admin');
       } else {
         // Try to log in with a default client or preset
