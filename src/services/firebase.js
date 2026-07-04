@@ -35,4 +35,4 @@ if (hasFirebaseConfig) {
   }
 }
 
-export { auth, db, storage, hasFirebaseConfig };
+export { app, auth, db, storage, hasFirebaseConfig };

@@ -1,4 +1,45 @@
-import { auth, db, hasFirebaseConfig } from './firebase';
+import { initializeApp } from 'firebase/app';
+import { getAuth } from 'firebase/auth';
+import { getFirestore } from 'firebase/firestore';
+import { getStorage } from 'firebase/storage';
+
+const firebaseConfig = {
+  apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
+  authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
+  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
+  storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
+  appId: import.meta.env.VITE_FIREBASE_APP_ID
+};
+
+const hasFirebaseConfig = !!(
+  firebaseConfig.apiKey &&
+  firebaseConfig.projectId &&
+  firebaseConfig.apiKey !== 'YOUR_API_KEY'
+);
+
+let app = null;
+let auth = null;
+let db = null;
+let storage = null;
+
+if (hasFirebaseConfig) {
+  try {
+    app = initializeApp(firebaseConfig);
+    auth = getAuth(app);
+    db = getFirestore(app);
+    storage = getStorage(app);
+  } catch (error) {
+    console.error('Error initializing Firebase, falling back to mock mode:', error);
+    app = null;
+    auth = null;
+    db = null;
+    storage = null;
+  }
+}
+
+export { app, auth, db, storage, hasFirebaseConfig };
+
 import {
   signInWithEmailAndPassword,
   createUserWithEmailAndPassword,
@@ -145,6 +186,49 @@ initMockStore();
 const generateId = () => Math.random().toString(36).substring(2, 11);
 
 // ==========================================
+// FIREBASE SEED DATA (first-time setup)
+// ==========================================
+
+const seedFirestoreData = async () => {
+  if (!hasFirebaseConfig || !db) return;
+  
+  try {
+    // Check if already seeded using a flag document
+    const seedFlag = await getDoc(doc(db, '_meta', 'seed_status'));
+    if (seedFlag.exists()) return; // Already seeded
+
+    console.log('Seeding Firestore with initial data...');
+
+    // Seed municipios
+    for (const muni of SEED_MUNICIPIOS) {
+      await setDoc(doc(db, 'municipios', muni.id), { nombre: muni.nombre });
+    }
+
+    // Seed productos
+    for (const prod of SEED_PRODUCTOS) {
+      await setDoc(doc(db, 'productos', prod.id), {
+        nombre: prod.nombre,
+        descripcion: prod.descripcion,
+        precio: prod.precio,
+        categoria: prod.categoria,
+        imagen: prod.imagen,
+        disponible: prod.disponible
+      });
+    }
+
+    // Mark as seeded
+    await setDoc(doc(db, '_meta', 'seed_status'), {
+      seededAt: new Date().toISOString(),
+      version: '1.0'
+    });
+
+    console.log('Firestore seeded successfully!');
+  } catch (error) {
+    console.error('Error seeding Firestore:', error);
+  }
+};
+
+// ==========================================
 // UNIFIED SERVICE API
 // ==========================================
 
@@ -161,7 +245,7 @@ export const dbService = {
         id: userCred.user.uid,
         ...userData,
         email,
-        aprobado: 'pendiente',
+        aprobado: 'aprobado',
         activo: false,
         solicitudActivacion: 'ninguna',
         municipioId: '',
@@ -180,7 +264,7 @@ export const dbService = {
         id: newUserId,
         ...userData,
         email,
-        aprobado: 'pendiente',
+        aprobado: 'aprobado',
         activo: false,
         solicitudActivacion: 'ninguna',
         municipioId: '',
@@ -201,15 +285,76 @@ export const dbService = {
 
   signIn: async (email, password) => {
     if (hasFirebaseConfig) {
-      const userCred = await signInWithEmailAndPassword(auth, email, password);
-      const userDoc = await getDoc(doc(db, 'users', userCred.user.uid));
-      if (!userDoc.exists()) {
-        throw new Error('No se encontró el documento del usuario.');
+      // Bootstrap: if admin login fails, try to create the admin account automatically
+      try {
+        const userCred = await signInWithEmailAndPassword(auth, email, password);
+        const userDocRef = doc(db, 'users', userCred.user.uid);
+        const userDocSnap = await getDoc(userDocRef);
+        if (!userDocSnap.exists()) {
+          // User exists in Auth but not in Firestore — create the document
+          if (email === 'admin@galeriacafe.com') {
+            const adminData = {
+              id: userCred.user.uid,
+              nombre: 'Administrador Galería Café',
+              documento: '12345678',
+              tipoDocumento: 'CC',
+              celular: '3201234567',
+              fechaNacimiento: '1990-01-01',
+              email: 'admin@galeriacafe.com',
+              aprobado: 'aprobado',
+              activo: true,
+              solicitudActivacion: 'aprobada',
+              municipioId: '',
+              rol: 'admin',
+              createdAt: new Date().toISOString()
+            };
+            await setDoc(userDocRef, adminData);
+            await seedFirestoreData();
+            return adminData;
+          }
+          throw new Error('No se encontró el documento del usuario.');
+        }
+        return userDocSnap.data();
+      } catch (error) {
+        // If admin credentials don't exist in Firebase Auth yet, create the account
+        if (
+          email === 'admin@galeriacafe.com' &&
+          password === 'admin123' &&
+          (error.code === 'auth/invalid-credential' ||
+           error.code === 'auth/user-not-found' ||
+           error.code === 'auth/wrong-password')
+        ) {
+          try {
+            const userCred = await createUserWithEmailAndPassword(auth, email, password);
+            const adminData = {
+              id: userCred.user.uid,
+              nombre: 'Administrador Galería Café',
+              documento: '12345678',
+              tipoDocumento: 'CC',
+              celular: '3201234567',
+              fechaNacimiento: '1990-01-01',
+              email: 'admin@galeriacafe.com',
+              aprobado: 'aprobado',
+              activo: true,
+              solicitudActivacion: 'aprobada',
+              municipioId: '',
+              rol: 'admin',
+              createdAt: new Date().toISOString()
+            };
+            await setDoc(doc(db, 'users', userCred.user.uid), adminData);
+            // Seed initial data into Firestore
+            await seedFirestoreData();
+            return adminData;
+          } catch (createError) {
+            console.error('Error creating admin account:', createError);
+            throw new Error('Error al crear la cuenta de administrador: ' + createError.message);
+          }
+        }
+        throw error;
       }
-      return userDoc.data();
     } else {
       // Admin backdoor
-      if (email === 'admin@galeriacafe.com' && password === 'admin') {
+      if (email === 'admin@galeriacafe.com' && password === 'admin123') {
         const users = getLocalStorageData('gc_users', []);
         return users.find(u => u.email === 'admin@galeriacafe.com');
       }
@@ -646,6 +791,74 @@ export const dbService = {
         allItems[idx].estado = estado;
         allItems[idx].motivoRechazo = motivoRechazo;
         setLocalStorageData('gc_pedido_items', allItems);
+      }
+    }
+  },
+
+  updatePedidoItemQuantity: async (itemId, cantidad) => {
+    if (hasFirebaseConfig) {
+      await updateDoc(doc(db, 'pedidoItems', itemId), { cantidad });
+    } else {
+      const allItems = getLocalStorageData('gc_pedido_items', []);
+      const idx = allItems.findIndex(i => i.id === itemId);
+      if (idx !== -1) {
+        allItems[idx].cantidad = cantidad;
+        setLocalStorageData('gc_pedido_items', allItems);
+      }
+    }
+  },
+
+  deletePedidoItem: async (itemId) => {
+    if (hasFirebaseConfig) {
+      await deleteDoc(doc(db, 'pedidoItems', itemId));
+    } else {
+      let allItems = getLocalStorageData('gc_pedido_items', []);
+      allItems = allItems.filter(i => i.id !== itemId);
+      setLocalStorageData('gc_pedido_items', allItems);
+    }
+  },
+
+  togglePedidoItemCheckedOff: async (itemId, checkedOff) => {
+    if (hasFirebaseConfig) {
+      await updateDoc(doc(db, 'pedidoItems', itemId), { checkedOff });
+    } else {
+      const allItems = getLocalStorageData('gc_pedido_items', []);
+      const idx = allItems.findIndex(i => i.id === itemId);
+      if (idx !== -1) {
+        allItems[idx].checkedOff = checkedOff;
+        setLocalStorageData('gc_pedido_items', allItems);
+      }
+    }
+  },
+
+  updatePedidoTotal: async (pedidoId, newTotal) => {
+    if (hasFirebaseConfig) {
+      await updateDoc(doc(db, 'pedidos', pedidoId), { total: newTotal });
+    } else {
+      const orders = getLocalStorageData('gc_pedidos', []);
+      const idx = orders.findIndex(o => o.id === pedidoId);
+      if (idx !== -1) {
+        orders[idx].total = newTotal;
+        setLocalStorageData('gc_pedidos', orders);
+      }
+    }
+  },
+
+  deactivateUserSession: async (userId) => {
+    if (hasFirebaseConfig) {
+      await updateDoc(doc(db, 'users', userId), {
+        activo: false,
+        solicitudActivacion: 'ninguna',
+        municipioId: ''
+      });
+    } else {
+      const users = getLocalStorageData('gc_users', []);
+      const idx = users.findIndex(u => u.id === userId);
+      if (idx !== -1) {
+        users[idx].activo = false;
+        users[idx].solicitudActivacion = 'ninguna';
+        users[idx].municipioId = '';
+        setLocalStorageData('gc_users', users);
       }
     }
   }

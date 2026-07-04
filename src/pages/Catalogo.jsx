@@ -1,41 +1,21 @@
 import React, { useState } from 'react';
 import { useApp } from '../context/AppContext';
 import { Link } from 'react-router-dom';
-import { Plus, ShoppingCart, Info, Check, Filter } from 'lucide-react';
+import { Plus, ShoppingCart, Info, Check, Filter, X, Minus, User as UserIcon } from 'lucide-react';
 import styles from './Catalogo.module.css';
 
 export default function Catalogo() {
   const { productos, subpersonas, addToCart } = useApp();
   const [activeCategory, setActiveCategory] = useState('all');
   
-  // Selection states per product ID
-  const [allocations, setAllocations] = useState({});
+  const [selectedProduct, setSelectedProduct] = useState(null);
+  const [orderQuantity, setOrderQuantity] = useState(1);
 
-  const handleSelectionChange = (prodId, field, value) => {
-    setAllocations(prev => ({
-      ...prev,
-      [prodId]: {
-        ...prev[prodId],
-        [field]: value
-      }
-    }));
-  };
-
-  const handleAddToCart = (product) => {
-    const alloc = allocations[product.id] || { subpersonaId: '', quantity: 1 };
-    const subId = alloc.subpersonaId === '' ? null : alloc.subpersonaId;
-    const qty = parseInt(alloc.quantity || 1, 10);
-
-    addToCart(product, qty, subId);
-    
-    // Reset inputs for this product
-    setAllocations(prev => ({
-      ...prev,
-      [product.id]: {
-        subpersonaId: '',
-        quantity: 1
-      }
-    }));
+  const handleConfirmSelection = (subpersonaId) => {
+    if (!selectedProduct) return;
+    addToCart(selectedProduct, orderQuantity, subpersonaId);
+    setSelectedProduct(null);
+    setOrderQuantity(1);
   };
 
   const categories = [
@@ -90,7 +70,6 @@ export default function Catalogo() {
       ) : (
         <div className={styles.grid}>
           {filteredProducts.map(product => {
-            const alloc = allocations[product.id] || { subpersonaId: '', quantity: 1 };
             const isAvailable = product.disponible;
 
             return (
@@ -123,49 +102,102 @@ export default function Catalogo() {
 
                   {isAvailable && (
                     <div className={styles.orderControls}>
-                      {/* Subpersona Selector */}
-                      <div className={styles.controlGroup}>
-                        <label>¿Para quién es?</label>
-                        <select
-                          className="form-control"
-                          value={alloc.subpersonaId}
-                          onChange={(e) => handleSelectionChange(product.id, 'subpersonaId', e.target.value)}
-                        >
-                          <option value="">Para Mí (Principal)</option>
-                          {subpersonas.map(s => (
-                            <option key={s.id} value={s.id}>Para {s.nombre}</option>
-                          ))}
-                        </select>
-                      </div>
-
-                      {/* Quantity and button row */}
-                      <div className={styles.btnRow}>
-                        <div className={styles.qtyBox}>
-                          <label>Cant.</label>
-                          <input
-                            type="number"
-                            min="1"
-                            max="20"
-                            className="form-control"
-                            value={alloc.quantity || 1}
-                            onChange={(e) => handleSelectionChange(product.id, 'quantity', parseInt(e.target.value, 10))}
-                          />
-                        </div>
-
-                        <button
-                          onClick={() => handleAddToCart(product)}
-                          className="btn btn-primary"
-                          style={{ flex: 1 }}
-                        >
-                          <Plus size={16} /> Pedir
-                        </button>
-                      </div>
+                      <button
+                        onClick={() => {
+                          setSelectedProduct(product);
+                          setOrderQuantity(1);
+                        }}
+                        className="btn btn-primary"
+                        style={{ width: '100%' }}
+                      >
+                        <Plus size={16} /> Pedir
+                      </button>
                     </div>
                   )}
                 </div>
               </div>
             );
           })}
+        </div>
+      )}
+
+      {/* Interactive Subperson Selection Modal */}
+      {selectedProduct && (
+        <div className={styles.modalOverlay}>
+          <div className={`${styles.modalCard} glass-card animate-fade-in`}>
+            <button 
+              className={styles.closeBtn} 
+              onClick={() => setSelectedProduct(null)}
+              title="Cerrar"
+            >
+              <X size={20} />
+            </button>
+            
+            <div className={styles.modalProductInfo}>
+              <img src={selectedProduct.imagen} alt={selectedProduct.nombre} className={styles.modalProductImage} />
+              <div className={styles.modalProductText}>
+                <h3>{selectedProduct.nombre}</h3>
+                <span className={styles.modalProductPrice}>${selectedProduct.precio.toLocaleString()}</span>
+              </div>
+            </div>
+
+            <div className={styles.qtySelector}>
+              <span className={styles.qtyLabel}>Cantidad:</span>
+              <div className={styles.qtyControls}>
+                <button 
+                  onClick={() => setOrderQuantity(prev => Math.max(1, prev - 1))}
+                  className={styles.qtyBtn}
+                >
+                  <Minus size={16} />
+                </button>
+                <span className={styles.qtyValue}>{orderQuantity}</span>
+                <button 
+                  onClick={() => setOrderQuantity(prev => Math.min(20, prev + 1))}
+                  className={styles.qtyBtn}
+                >
+                  <Plus size={16} />
+                </button>
+              </div>
+            </div>
+
+            <div className={styles.assignmentHeader}>
+              <h4>¿Para quién es?</h4>
+              <p>Asigna este producto a un miembro de la mesa con un solo clic:</p>
+            </div>
+
+            <div className={styles.subpersonasGrid}>
+              {/* Main Client Card */}
+              <div 
+                className={styles.subpersonaTile} 
+                onClick={() => handleConfirmSelection(null)}
+              >
+                <div className={`${styles.avatarCircle} ${styles.avatarMain}`}>
+                  <UserIcon size={20} />
+                </div>
+                <div className={styles.subpersonaInfo}>
+                  <span className={styles.subName}>Para Mí</span>
+                  <span className={styles.subRole}>Principal</span>
+                </div>
+              </div>
+
+              {/* Companions Cards */}
+              {subpersonas.map(s => (
+                <div 
+                  key={s.id} 
+                  className={styles.subpersonaTile} 
+                  onClick={() => handleConfirmSelection(s.id)}
+                >
+                  <div className={`${styles.avatarCircle} ${styles.avatarComp}`}>
+                    {s.nombre.substring(0, 2).toUpperCase()}
+                  </div>
+                  <div className={styles.subpersonaInfo}>
+                    <span className={styles.subName}>{s.nombre}</span>
+                    <span className={styles.subRole}>Acompañante</span>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
         </div>
       )}
     </div>

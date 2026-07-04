@@ -240,14 +240,16 @@
 
 .logoutBtn {
   background: transparent;
-  border: none;
-  color: var(--text-muted);
+  border: 1px solid #cca463;
+  color: #cca463;
   cursor: pointer;
-  padding: 6px;
+  padding: 8px 12px;
   border-radius: var(--radius-sm);
-  display: flex;
+  display: inline-flex;
   align-items: center;
   justify-content: center;
+  gap: 8px;
+  font-weight: 600;
   transition: all var(--transition-fast);
 }
 

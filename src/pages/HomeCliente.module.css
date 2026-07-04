@@ -469,3 +469,68 @@
     gap: 16px;
   }
 }
+
+/* Elegant Glassmorphic Modal */
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(15px);
+  -webkit-backdrop-filter: blur(15px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 20px;
+}
+
+.modalCard {
+  max-width: 480px;
+  width: 100%;
+  padding: 36px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  border: 1px solid rgba(204, 164, 99, 0.25);
+  box-shadow: 0 0 30px rgba(204, 164, 99, 0.1);
+}
+
+.modalIcon {
+  width: 60px;
+  height: 60px;
+  border-radius: var(--radius-full);
+  background: rgba(204, 164, 99, 0.1);
+  color: var(--accent-gold);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(204, 164, 99, 0.2);
+  margin-bottom: 8px;
+}
+
+.modalHeader h2 {
+  font-size: 1.8rem;
+  font-family: var(--font-serif);
+}
+
+.modalBody p {
+  font-size: 1rem;
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+
+.modalFooter {
+  display: flex;
+  gap: 16px;
+  width: 100%;
+  margin-top: 10px;
+}
+
+.modalFooter button {
+  flex: 1;
+}

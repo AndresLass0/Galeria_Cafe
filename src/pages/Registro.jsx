@@ -31,7 +31,7 @@ export default function Registro() {
     try {
       const { email, password, ...rest } = formData;
       await register(email, password, rest);
-      navigate('/login');
+      navigate('/');
     } catch (err) {
       console.error(err);
     } finally {

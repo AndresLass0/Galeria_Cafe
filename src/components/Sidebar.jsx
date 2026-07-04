@@ -13,7 +13,8 @@ import {
   LogOut,
   Bell,
   Menu,
-  X
+  X,
+  CreditCard
 } from 'lucide-react';
 import styles from './Sidebar.module.css';
 
@@ -68,6 +69,15 @@ export default function Sidebar() {
           >
             <Users size={20} />
             <span>Clientes</span>
+          </NavLink>
+
+          <NavLink 
+            to="/admin/cuentas" 
+            className={({ isActive }) => `${styles.navItem} ${isActive ? styles.active : ''}`}
+            onClick={() => setIsOpen(false)}
+          >
+            <CreditCard size={20} />
+            <span>Cuentas Activas</span>
           </NavLink>
 
           <NavLink 

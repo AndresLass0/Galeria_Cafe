@@ -191,12 +191,14 @@ export const AppProvider = ({ children }) => {
     setLoading(true);
     try {
       const newUser = await dbService.signUp(email, password, userData);
-      showToast('Registro exitoso. Tu cuenta está pendiente de aprobación por el administrador.', 'info');
+      showToast('¡Registro exitoso! Bienvenido a Galería Café.', 'success');
       
       // Notify Admin
-      addNotification('admin', `Nuevo registro: ${newUser.nombre} (${newUser.tipoDocumento} ${newUser.documento}) ha solicitado registro.`, 'info');
+      addNotification('admin', `Nuevo registro: ${newUser.nombre} ha ingresado directamente.`, 'info');
       
-      return newUser;
+      // Auto login
+      const loggedUser = await login(email, password);
+      return loggedUser;
     } catch (error) {
       showToast(error.message || 'Error al registrarse', 'error');
       throw error;
@@ -211,6 +213,7 @@ export const AppProvider = ({ children }) => {
       await dbService.signOut();
       setUser(null);
       setCart([]);
+      setNotifications([]);
       setSubpersonas([]);
       setPedidos([]);
       setAllPedidos([]);
@@ -220,7 +223,8 @@ export const AppProvider = ({ children }) => {
       }
       showToast('Sesión cerrada correctamente.', 'info');
     } catch (error) {
-      showToast('Error al cerrar sesión', 'error');
+      console.error('Error cerrando sesión:', error);
+      showToast(error?.message || 'Error al cerrar sesión', 'error');
     } finally {
       setLoading(false);
     }
@@ -518,6 +522,61 @@ export const AppProvider = ({ children }) => {
     }
   };
 
+  const handleDeactivateUserSession = async (userId) => {
+    try {
+      await dbService.deactivateUserSession(userId);
+      showToast('Sesión de mesa finalizada.', 'info');
+      
+      // Notify client
+      addNotification(userId, 'Tu sesión de mesa ha sido finalizada por el administrador. ¡Gracias por visitarnos!', 'info');
+      
+      await loadAdminData();
+    } catch (error) {
+      showToast('Error al cerrar la sesión de mesa', 'error');
+    }
+  };
+
+  const handleUpdatePedidoItemQuantity = async (pedidoId, itemId, newQty) => {
+    try {
+      if (newQty <= 0) {
+        await dbService.deletePedidoItem(itemId);
+      } else {
+        await dbService.updatePedidoItemQuantity(itemId, newQty);
+      }
+      
+      // Recalculate order total
+      const order = allPedidos.find(p => p.id === pedidoId);
+      if (order) {
+        const updatedItems = order.items.map(item => {
+          if (item.id === itemId) return { ...item, cantidad: newQty };
+          return item;
+        }).filter(item => item.cantidad > 0);
+        
+        let newTotal = 0;
+        for (const item of updatedItems) {
+          const product = productos.find(p => p.id === item.productoId);
+          if (product) {
+            newTotal += product.precio * item.cantidad;
+          }
+        }
+        await dbService.updatePedidoTotal(pedidoId, newTotal);
+      }
+      
+      await loadAdminData();
+    } catch (error) {
+      showToast('Error al actualizar la cantidad del producto', 'error');
+    }
+  };
+
+  const handleTogglePedidoItemCheckedOff = async (itemId, checkedOff) => {
+    try {
+      await dbService.togglePedidoItemCheckedOff(itemId, checkedOff);
+      await loadAdminData();
+    } catch (error) {
+      showToast('Error al actualizar el estado de cobro', 'error');
+    }
+  };
+
   return (
     <AppContext.Provider value={{
       user,
@@ -562,7 +621,10 @@ export const AppProvider = ({ children }) => {
       handleUpdateProducto,
       handleDeleteProducto,
       handleUpdatePedidoState,
-      handleUpdatePedidoItemState
+      handleUpdatePedidoItemState,
+      handleDeactivateUserSession,
+      handleUpdatePedidoItemQuantity,
+      handleTogglePedidoItemCheckedOff
     }}>
       {children}
     </AppContext.Provider>

@@ -20,6 +20,7 @@ import Perfil from './pages/Perfil';
 // Admin Pages
 import AdminDashboard from './pages/admin/AdminDashboard';
 import AdminClientes from './pages/admin/AdminClientes';
+import AdminCuentas from './pages/admin/AdminCuentas';
 import AdminSolicitudes from './pages/admin/AdminSolicitudes';
 import AdminMunicipios from './pages/admin/AdminMunicipios';
 import AdminProductos from './pages/admin/AdminProductos';
@@ -145,6 +146,7 @@ function AppRoutes() {
           <Route element={<AdminLayout />}>
             <Route path="/admin" element={<AdminDashboard />} />
             <Route path="/admin/clientes" element={<AdminClientes />} />
+            <Route path="/admin/cuentas" element={<AdminCuentas />} />
             <Route path="/admin/solicitudes" element={<AdminSolicitudes />} />
             <Route path="/admin/municipios" element={<AdminMunicipios />} />
             <Route path="/admin/productos" element={<AdminProductos />} />
