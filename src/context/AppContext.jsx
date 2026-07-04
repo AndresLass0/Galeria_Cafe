@@ -49,37 +49,137 @@ export const AppProvider = ({ children }) => {
     setNotifications(userNotifs.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)));
   };
 
-  const addNotification = (targetUserId, message, type = 'info') => {
-    const allNotifs = JSON.parse(localStorage.getItem('gc_notifications') || '[]');
+  const addNotification = async (targetUserId, message, type = 'info') => {
     const newNotif = {
-      id: 'notif_' + Math.random().toString(36).substring(2, 9),
       userId: targetUserId, // 'admin' or specific userId
       message,
       type,
       read: false,
       createdAt: new Date().toISOString()
     };
-    allNotifs.push(newNotif);
-    localStorage.setItem('gc_notifications', JSON.stringify(allNotifs));
-    
-    // If active user is the target, refresh notifications state
-    if (user && (user.id === targetUserId || (user.rol === 'admin' && targetUserId === 'admin'))) {
+
+    if (!dbService.isMock) {
+      try {
+        await dbService.createNotification(newNotif);
+      } catch (e) {
+        console.error("Error creating Firebase notification:", e);
+      }
+    } else {
+      const allNotifs = JSON.parse(localStorage.getItem('gc_notifications') || '[]');
+      const notifWithId = {
+        id: 'notif_' + Math.random().toString(36).substring(2, 9),
+        ...newNotif
+      };
+      allNotifs.push(notifWithId);
+      localStorage.setItem('gc_notifications', JSON.stringify(allNotifs));
+      
+      if (user && (user.id === targetUserId || (user.rol === 'admin' && targetUserId === 'admin'))) {
+        loadNotifications(user.id);
+      }
+    }
+  };
+
+  const markNotificationsAsRead = async () => {
+    if (!user) return;
+    if (!dbService.isMock) {
+      try {
+        const unread = notifications.filter(n => !n.read);
+        for (const n of unread) {
+          await dbService.markNotificationRead(n.id);
+        }
+      } catch (e) {
+        console.error("Error marking notifications as read in Firebase:", e);
+      }
+    } else {
+      const allNotifs = JSON.parse(localStorage.getItem('gc_notifications') || '[]');
+      const updated = allNotifs.map(n => {
+        if (n.userId === user.id || (user.rol === 'admin' && n.userId === 'admin')) {
+          return { ...n, read: true };
+        }
+        return n;
+      });
+      localStorage.setItem('gc_notifications', JSON.stringify(updated));
       loadNotifications(user.id);
     }
   };
 
-  const markNotificationsAsRead = () => {
-    if (!user) return;
-    const allNotifs = JSON.parse(localStorage.getItem('gc_notifications') || '[]');
-    const updated = allNotifs.map(n => {
-      if (n.userId === user.id || (user.rol === 'admin' && n.userId === 'admin')) {
-        return { ...n, read: true };
+  const deleteNotification = async (notifId) => {
+    if (!dbService.isMock) {
+      try {
+        await dbService.deleteNotification(notifId);
+      } catch (e) {
+        console.error("Error deleting notification from Firebase:", e);
       }
-      return n;
-    });
-    localStorage.setItem('gc_notifications', JSON.stringify(updated));
-    loadNotifications(user.id);
+    } else {
+      let allNotifs = JSON.parse(localStorage.getItem('gc_notifications') || '[]');
+      allNotifs = allNotifs.filter(n => n.id !== notifId);
+      localStorage.setItem('gc_notifications', JSON.stringify(allNotifs));
+      loadNotifications(user.id);
+    }
   };
+
+  // Real-time data subscriptions based on logged-in user
+  useEffect(() => {
+    if (!user) {
+      setNotifications([]);
+      setSubpersonas([]);
+      setPedidos([]);
+      setAllUsers([]);
+      setAllPedidos([]);
+      return;
+    }
+
+    let unsubNotifications = () => {};
+    let unsubClientSubs = () => {};
+    let unsubClientPedidos = () => {};
+    let unsubAdminUsers = () => {};
+    let unsubAdminPedidos = () => {};
+
+    if (!dbService.isMock) {
+      // 1. Subscribe to notifications (for both clients and admins)
+      unsubNotifications = dbService.subscribeNotifications(
+        user.id,
+        user.rol === 'admin',
+        (notifsList) => {
+          setNotifications(notifsList);
+        }
+      );
+
+      if (user.rol === 'admin') {
+        // 2. Admin: Subscribe to users and orders
+        unsubAdminUsers = dbService.subscribeAllUsers((usersList) => {
+          setAllUsers(usersList);
+        });
+        unsubAdminPedidos = dbService.subscribeAllPedidos((pedsList) => {
+          setAllPedidos(pedsList);
+        });
+      } else {
+        // 3. Client: Subscribe to their group/subpersonas and orders
+        unsubClientSubs = dbService.subscribeSubpersonas(user.id, (subsList) => {
+          setSubpersonas(subsList);
+        });
+        unsubClientPedidos = dbService.subscribeClientPedidos(user.id, (pedsList) => {
+          setPedidos(pedsList);
+        });
+      }
+    } else {
+      // Mock mode fallback (load once)
+      loadNotifications(user.id);
+      if (user.rol === 'admin') {
+        loadAdminData();
+      } else {
+        loadClientInitialData(user);
+      }
+    }
+
+    return () => {
+      unsubNotifications();
+      unsubClientSubs();
+      unsubClientPedidos();
+      unsubAdminUsers();
+      unsubAdminPedidos();
+    };
+  }, [user]);
 
   // Auth State Listener
   useEffect(() => {
@@ -89,13 +189,6 @@ export const AppProvider = ({ children }) => {
       // Firebase auth listener
       unsubscribe = dbService.subscribeAuthState((userData) => {
         setUser(userData);
-        if (userData) {
-          loadNotifications(userData.id);
-          loadClientInitialData(userData);
-        } else {
-          setSubpersonas([]);
-          setPedidos([]);
-        }
         setLoading(false);
       });
     } else {
@@ -105,8 +198,6 @@ export const AppProvider = ({ children }) => {
         dbService.getUser(savedUserId).then((userData) => {
           if (userData) {
             setUser(userData);
-            loadNotifications(userData.id);
-            loadClientInitialData(userData);
           } else {
             localStorage.removeItem('gc_current_user_id');
           }
@@ -135,7 +226,7 @@ export const AppProvider = ({ children }) => {
     }
   };
 
-  // Fetch client initial data
+  // Fetch client initial data (Mock only)
   const loadClientInitialData = async (currUser) => {
     if (!currUser || currUser.rol === 'admin') return;
     try {
@@ -154,7 +245,9 @@ export const AppProvider = ({ children }) => {
     try {
       const updated = await dbService.getUser(user.id);
       setUser(updated);
-      loadNotifications(user.id);
+      if (dbService.isMock) {
+        loadNotifications(user.id);
+      }
       return updated;
     } catch (e) {
       console.error(e);
@@ -170,12 +263,12 @@ export const AppProvider = ({ children }) => {
       setUser(userData);
       if (dbService.isMock) {
         localStorage.setItem('gc_current_user_id', userData.id);
-      }
-      loadNotifications(userData.id);
-      if (userData.rol === 'admin') {
-        await loadAdminData();
-      } else {
-        await loadClientInitialData(userData);
+        loadNotifications(userData.id);
+        if (userData.rol === 'admin') {
+          await loadAdminData();
+        } else {
+          await loadClientInitialData(userData);
+        }
       }
       showToast(`¡Bienvenido de nuevo, ${userData.nombre}!`, 'success');
       return userData;

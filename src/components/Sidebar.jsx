@@ -19,9 +19,10 @@ import {
 import styles from './Sidebar.module.css';
 
 export default function Sidebar() {
-  const { user, notifications, logout } = useApp();
+  const { user, notifications, logout, markNotificationsAsRead } = useApp();
   const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
+  const [showNotifications, setShowNotifications] = useState(false);
 
   const adminNotifications = notifications.filter(n => !n.read);
   const unreadCount = adminNotifications.length;
@@ -29,6 +30,13 @@ export default function Sidebar() {
   const handleLogout = async () => {
     await logout();
     navigate('/login');
+  };
+
+  const toggleNotifications = () => {
+    setShowNotifications(!showNotifications);
+    if (!showNotifications && unreadCount > 0) {
+      markNotificationsAsRead();
+    }
   };
 
   if (!user || user.rol !== 'admin') return null;
@@ -40,6 +48,36 @@ export default function Sidebar() {
         <div className={styles.mobileBrand}>
           <img src={logoImg} alt="Galería Café" className={styles.logoMobile} />
         </div>
+
+        {/* Notifications Bell for Mobile */}
+        <div className={styles.notifWrapperMobile}>
+          <button onClick={toggleNotifications} className={styles.bellBtn} title="Notificaciones">
+            <Bell size={20} />
+            {unreadCount > 0 && <span className={styles.bellBadge}>{unreadCount}</span>}
+          </button>
+          
+          {showNotifications && (
+            <div className={styles.dropdown}>
+              <div className={styles.dropdownHeader}>
+                <h4>Notificaciones</h4>
+                {unreadCount > 0 && <span className={styles.countBadge}>{unreadCount} nuevas</span>}
+              </div>
+              <div className={styles.dropdownList}>
+                {notifications.length === 0 ? (
+                  <div className={styles.empty}>No tienes notificaciones.</div>
+                ) : (
+                  notifications.map(n => (
+                    <div key={n.id} className={`${styles.item} ${!n.read ? styles.unreadItem : ''}`}>
+                      <p>{n.message}</p>
+                      <span>{new Date(n.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>
+                    </div>
+                  ))
+                )}
+              </div>
+            </div>
+          )}
+        </div>
+
         <button onClick={() => setIsOpen(!isOpen)} className={styles.toggleBtn}>
           {isOpen ? <X size={24} /> : <Menu size={24} />}
         </button>
@@ -49,6 +87,35 @@ export default function Sidebar() {
       <aside className={`${styles.sidebar} ${isOpen ? styles.sidebarOpen : ''}`}>
         <div className={styles.brand}>
           <img src={logoImg} alt="Galería Café" className={styles.logo} />
+          
+          {/* Notifications Bell for Desktop */}
+          <div className={styles.notifWrapper}>
+            <button onClick={toggleNotifications} className={styles.bellBtn} title="Notificaciones">
+              <Bell size={20} />
+              {unreadCount > 0 && <span className={styles.bellBadge}>{unreadCount}</span>}
+            </button>
+            
+            {showNotifications && (
+              <div className={styles.dropdown}>
+                <div className={styles.dropdownHeader}>
+                  <h4>Notificaciones</h4>
+                  {unreadCount > 0 && <span className={styles.countBadge}>{unreadCount} nuevas</span>}
+                </div>
+                <div className={styles.dropdownList}>
+                  {notifications.length === 0 ? (
+                    <div className={styles.empty}>No tienes notificaciones.</div>
+                  ) : (
+                    notifications.map(n => (
+                      <div key={n.id} className={`${styles.item} ${!n.read ? styles.unreadItem : ''}`}>
+                        <p>{n.message}</p>
+                        <span>{new Date(n.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>
+                      </div>
+                    ))
+                  )}
+                </div>
+              </div>
+            )}
+          </div>
         </div>
 
         <nav className={styles.navMenu}>

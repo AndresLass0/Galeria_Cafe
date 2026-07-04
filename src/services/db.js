@@ -57,7 +57,8 @@ import {
   updateDoc,
   deleteDoc,
   addDoc,
-  orderBy
+  orderBy,
+  onSnapshot
 } from 'firebase/firestore';
 
 // ==========================================
@@ -381,14 +382,28 @@ export const dbService = {
 
   subscribeAuthState: (callback) => {
     if (hasFirebaseConfig) {
-      return onAuthStateChanged(auth, async (fbUser) => {
+      let unsubscribeUser = null;
+      const unsubscribeAuth = onAuthStateChanged(auth, (fbUser) => {
+        if (unsubscribeUser) {
+          unsubscribeUser();
+          unsubscribeUser = null;
+        }
+
         if (fbUser) {
-          const userDoc = await getDoc(doc(db, 'users', fbUser.uid));
-          callback(userDoc.exists() ? userDoc.data() : null);
+          unsubscribeUser = onSnapshot(doc(db, 'users', fbUser.uid), (docSnap) => {
+            callback(docSnap.exists() ? docSnap.data() : null);
+          }, (error) => {
+            console.error("Error listening to user document in real time:", error);
+          });
         } else {
           callback(null);
         }
       });
+
+      return () => {
+        unsubscribeAuth();
+        if (unsubscribeUser) unsubscribeUser();
+      };
     } else {
       // AppContext handles the mock persistent login via localStorage token
       return () => {}; // return empty unsubscribe
@@ -851,6 +866,16 @@ export const dbService = {
         solicitudActivacion: 'ninguna',
         municipioId: ''
       });
+      // Delete user's notifications in Firestore so they don't persist to the next session
+      try {
+        const q = query(collection(db, 'notifications'), where('userId', '==', userId));
+        const snap = await getDocs(q);
+        for (const docSnap of snap.docs) {
+          await deleteDoc(doc(db, 'notifications', docSnap.id));
+        }
+      } catch (e) {
+        console.error("Error clearing user notifications on session end:", e);
+      }
     } else {
       const users = getLocalStorageData('gc_users', []);
       const idx = users.findIndex(u => u.id === userId);
@@ -860,6 +885,145 @@ export const dbService = {
         users[idx].municipioId = '';
         setLocalStorageData('gc_users', users);
       }
+      // Also clear localStorage notifications for this user
+      let allNotifs = getLocalStorageData('gc_notifications', []);
+      allNotifs = allNotifs.filter(n => n.userId !== userId);
+      setLocalStorageData('gc_notifications', allNotifs);
+    }
+  },
+
+  subscribeSubpersonas: (userId, callback) => {
+    if (hasFirebaseConfig) {
+      const q = query(collection(db, 'subpersonas'), where('userId', '==', userId));
+      return onSnapshot(q, (snap) => {
+        const list = [];
+        snap.forEach(d => list.push({ id: d.id, ...d.data() }));
+        callback(list);
+      });
+    } else {
+      return () => {};
+    }
+  },
+
+  subscribeClientPedidos: (userId, callback) => {
+    if (hasFirebaseConfig) {
+      let orders = [];
+      let items = [];
+
+      const emit = () => {
+        const hydrated = orders.map(o => {
+          const oItems = items.filter(i => i.pedidoId === o.id);
+          return { ...o, items: oItems };
+        });
+        hydrated.sort((a, b) => new Date(b.fecha) - new Date(a.fecha));
+        callback(hydrated);
+      };
+
+      const qOrders = query(collection(db, 'pedidos'), where('userId', '==', userId));
+      const unsubOrders = onSnapshot(qOrders, (snap) => {
+        orders = [];
+        snap.forEach(d => orders.push({ id: d.id, ...d.data() }));
+        emit();
+      });
+
+      const unsubItems = onSnapshot(collection(db, 'pedidoItems'), (snap) => {
+        items = [];
+        snap.forEach(d => items.push({ id: d.id, ...d.data() }));
+        emit();
+      });
+
+      return () => {
+        unsubOrders();
+        unsubItems();
+      };
+    } else {
+      return () => {};
+    }
+  },
+
+  subscribeAllUsers: (callback) => {
+    if (hasFirebaseConfig) {
+      return onSnapshot(collection(db, 'users'), (snapshot) => {
+        const list = [];
+        snapshot.forEach(docSnap => {
+          list.push(docSnap.data());
+        });
+        callback(list);
+      });
+    } else {
+      return () => {};
+    }
+  },
+
+  subscribeAllPedidos: (callback) => {
+    if (hasFirebaseConfig) {
+      let orders = [];
+      let items = [];
+
+      const emit = () => {
+        const hydrated = orders.map(o => {
+          const oItems = items.filter(i => i.pedidoId === o.id);
+          return { ...o, items: oItems };
+        });
+        hydrated.sort((a, b) => new Date(b.fecha) - new Date(a.fecha));
+        callback(hydrated);
+      };
+
+      const unsubOrders = onSnapshot(collection(db, 'pedidos'), (snap) => {
+        orders = [];
+        snap.forEach(d => orders.push({ id: d.id, ...d.data() }));
+        emit();
+      });
+
+      const unsubItems = onSnapshot(collection(db, 'pedidoItems'), (snap) => {
+        items = [];
+        snap.forEach(d => items.push({ id: d.id, ...d.data() }));
+        emit();
+      });
+
+      return () => {
+        unsubOrders();
+        unsubItems();
+      };
+    } else {
+      return () => {};
+    }
+  },
+
+  subscribeNotifications: (userId, isAdminUser, callback) => {
+    if (hasFirebaseConfig) {
+      const q = query(
+        collection(db, 'notifications'),
+        where('userId', 'in', isAdminUser ? [userId, 'admin'] : [userId])
+      );
+      return onSnapshot(q, (snapshot) => {
+        const list = [];
+        snapshot.forEach(docSnap => {
+          list.push({ id: docSnap.id, ...docSnap.data() });
+        });
+        list.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+        callback(list);
+      });
+    } else {
+      return () => {};
+    }
+  },
+
+  createNotification: async (notifData) => {
+    if (hasFirebaseConfig) {
+      await addDoc(collection(db, 'notifications'), notifData);
+    }
+  },
+
+  markNotificationRead: async (notifId) => {
+    if (hasFirebaseConfig) {
+      await updateDoc(doc(db, 'notifications', notifId), { read: true });
+    }
+  },
+
+  deleteNotification: async (notifId) => {
+    if (hasFirebaseConfig) {
+      await deleteDoc(doc(db, 'notifications', notifId));
     }
   }
 };
